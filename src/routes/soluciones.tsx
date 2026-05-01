@@ -1,13 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
 import {
-  LayoutDashboard, Building2, BarChart3, FileText, Settings, Bell, Search,
+  BarChart3, FileText, Bell, Search,
   Database, Cpu, ShieldCheck, ArrowUpRight, ChevronRight, Activity, Zap,
-  Sun, Moon, ChevronLeft, Dna,
+  Sun, Moon, Dna,
 } from "lucide-react";
-import { Logo } from "@/components/tl/Logo";
 import { AreaSpark, BarMatrix, RadialGauge } from "@/components/tl/MiniChart";
 import { useTheme } from "@/components/theme-provider";
+import { SideNav } from "@/components/tl/SideNav";
 import biotechHero from "@/assets/biotech-hero.jpg";
 
 export const Route = createFileRoute("/soluciones")({
@@ -24,12 +23,11 @@ const series = (seed: number, n = 60) =>
   Array.from({ length: n }, (_, i) => 50 + Math.sin(i * 0.4 + seed) * 18 + Math.cos(i * 0.21 + seed * 2) * 10 + i * 0.2);
 
 function Soluciones() {
-  const [collapsed, setCollapsed] = useState(false);
   const { theme, toggle } = useTheme();
 
   return (
     <div className="min-h-screen flex bg-background">
-      <SideNav collapsed={collapsed} setCollapsed={setCollapsed} />
+      <SideNav />
 
       <div className="flex-1 min-w-0 flex flex-col">
         {/* Top bar */}
