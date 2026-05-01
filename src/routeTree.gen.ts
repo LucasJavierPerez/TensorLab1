@@ -10,11 +10,19 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SolucionesRouteImport } from './routes/soluciones'
+import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SolucionesTelemetriaRouteImport } from './routes/soluciones.telemetria'
+import { Route as SolucionesDatasetsRouteImport } from './routes/soluciones.datasets'
 
 const SolucionesRoute = SolucionesRouteImport.update({
   id: '/soluciones',
   path: '/soluciones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactoRoute = ContactoRouteImport.update({
+  id: '/contacto',
+  path: '/contacto',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -22,31 +30,67 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SolucionesTelemetriaRoute = SolucionesTelemetriaRouteImport.update({
+  id: '/telemetria',
+  path: '/telemetria',
+  getParentRoute: () => SolucionesRoute,
+} as any)
+const SolucionesDatasetsRoute = SolucionesDatasetsRouteImport.update({
+  id: '/datasets',
+  path: '/datasets',
+  getParentRoute: () => SolucionesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/soluciones': typeof SolucionesRoute
+  '/contacto': typeof ContactoRoute
+  '/soluciones': typeof SolucionesRouteWithChildren
+  '/soluciones/datasets': typeof SolucionesDatasetsRoute
+  '/soluciones/telemetria': typeof SolucionesTelemetriaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/soluciones': typeof SolucionesRoute
+  '/contacto': typeof ContactoRoute
+  '/soluciones': typeof SolucionesRouteWithChildren
+  '/soluciones/datasets': typeof SolucionesDatasetsRoute
+  '/soluciones/telemetria': typeof SolucionesTelemetriaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/soluciones': typeof SolucionesRoute
+  '/contacto': typeof ContactoRoute
+  '/soluciones': typeof SolucionesRouteWithChildren
+  '/soluciones/datasets': typeof SolucionesDatasetsRoute
+  '/soluciones/telemetria': typeof SolucionesTelemetriaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/soluciones'
+  fullPaths:
+    | '/'
+    | '/contacto'
+    | '/soluciones'
+    | '/soluciones/datasets'
+    | '/soluciones/telemetria'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/soluciones'
-  id: '__root__' | '/' | '/soluciones'
+  to:
+    | '/'
+    | '/contacto'
+    | '/soluciones'
+    | '/soluciones/datasets'
+    | '/soluciones/telemetria'
+  id:
+    | '__root__'
+    | '/'
+    | '/contacto'
+    | '/soluciones'
+    | '/soluciones/datasets'
+    | '/soluciones/telemetria'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  SolucionesRoute: typeof SolucionesRoute
+  ContactoRoute: typeof ContactoRoute
+  SolucionesRoute: typeof SolucionesRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolucionesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contacto': {
+      id: '/contacto'
+      path: '/contacto'
+      fullPath: '/contacto'
+      preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -65,12 +116,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/soluciones/telemetria': {
+      id: '/soluciones/telemetria'
+      path: '/telemetria'
+      fullPath: '/soluciones/telemetria'
+      preLoaderRoute: typeof SolucionesTelemetriaRouteImport
+      parentRoute: typeof SolucionesRoute
+    }
+    '/soluciones/datasets': {
+      id: '/soluciones/datasets'
+      path: '/datasets'
+      fullPath: '/soluciones/datasets'
+      preLoaderRoute: typeof SolucionesDatasetsRouteImport
+      parentRoute: typeof SolucionesRoute
+    }
   }
 }
 
+interface SolucionesRouteChildren {
+  SolucionesDatasetsRoute: typeof SolucionesDatasetsRoute
+  SolucionesTelemetriaRoute: typeof SolucionesTelemetriaRoute
+}
+
+const SolucionesRouteChildren: SolucionesRouteChildren = {
+  SolucionesDatasetsRoute: SolucionesDatasetsRoute,
+  SolucionesTelemetriaRoute: SolucionesTelemetriaRoute,
+}
+
+const SolucionesRouteWithChildren = SolucionesRoute._addFileChildren(
+  SolucionesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  SolucionesRoute: SolucionesRoute,
+  ContactoRoute: ContactoRoute,
+  SolucionesRoute: SolucionesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

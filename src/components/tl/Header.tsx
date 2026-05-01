@@ -12,22 +12,29 @@ export function Header() {
           <div className="flex items-center gap-8">
             <Link to="/"><Logo /></Link>
             <nav className="hidden md:flex items-center gap-1 text-[13px]">
-              {[
-                { to: "/", label: "Plataforma" },
-                { to: "/soluciones", label: "Soluciones" },
-              ].map((l) => (
-                <Link
-                  key={l.to}
-                  to={l.to}
-                  activeOptions={{ exact: true }}
-                  className="px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground transition"
-                  activeProps={{ className: "px-3 py-1.5 rounded-md text-foreground bg-accent/50" }}
-                >
-                  {l.label}
-                </Link>
-              ))}
-              <span className="px-3 py-1.5 rounded-md text-muted-foreground/60 cursor-default">Industrias</span>
-              <span className="px-3 py-1.5 rounded-md text-muted-foreground/60 cursor-default">Investigación</span>
+              <Link
+                to="/"
+                activeOptions={{ exact: true }}
+                className="px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground transition"
+                activeProps={{ className: "px-3 py-1.5 rounded-md text-foreground bg-accent/50" }}
+              >
+                Plataforma
+              </Link>
+              <Link
+                to="/soluciones"
+                className="px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground transition"
+                activeProps={{ className: "px-3 py-1.5 rounded-md text-foreground bg-accent/50" }}
+              >
+                Soluciones
+              </Link>
+              <a href="/#ecosistemas" className="px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground transition">Industrias</a>
+              <Link
+                to="/contacto"
+                className="px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground transition"
+                activeProps={{ className: "px-3 py-1.5 rounded-md text-foreground bg-accent/50" }}
+              >
+                Contacto
+              </Link>
             </nav>
           </div>
           <div className="flex items-center gap-2">
