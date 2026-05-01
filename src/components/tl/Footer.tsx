@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { ArrowUpRight } from "lucide-react";
 
-const cols: { title: string; items: { label: string; to?: "/" | "/soluciones" }[] }[] = [
+const cols: { title: string; items: { label: string; to?: "/" | "/soluciones" | "/contacto" | "/soluciones/datasets" | "/soluciones/telemetria" }[] }[] = [
   {
     title: "Ecosistemas",
     items: [
@@ -18,9 +18,9 @@ const cols: { title: string; items: { label: string; to?: "/" | "/soluciones" }[
     title: "Plataforma",
     items: [
       { label: "Panel de soluciones", to: "/soluciones" },
-      { label: "Inteligencia de precisión" },
-      { label: "Modelos predictivos" },
-      { label: "Pipeline ML" },
+      { label: "Datasets", to: "/soluciones/datasets" },
+      { label: "Telemetría", to: "/soluciones/telemetria" },
+      { label: "Contacto", to: "/contacto" },
       { label: "API · SDK" },
     ],
   },
