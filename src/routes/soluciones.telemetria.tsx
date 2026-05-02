@@ -54,8 +54,8 @@ function Telemetria() {
       <SideNav />
       <div className="flex-1 min-w-0 flex flex-col">
         <DashboardTopBar crumbs={["SOLUCIONES", "TELEMETRÍA"]} />
-        <main className="flex-1 p-5 md:p-7 space-y-5">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <main className="flex-1 p-4 md:p-7 space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
               <div className="label-tag mb-1.5">Cluster · LIVE</div>
               <h1 className="font-display text-3xl md:text-4xl tracking-tight">
@@ -65,9 +65,9 @@ function Telemetria() {
                 1,248 nodos · 6 regiones · ventana deslizante 24h. Ingesta de eventos a 412 K/s.
               </p>
             </div>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-strong text-[11px] font-mono-data">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-strong text-[11px] font-mono-data w-fit">
               <span className="pulse-dot" />
-              <span className="text-muted-foreground">STREAM</span>
+              <span className="text-muted-foreground uppercase">Stream</span>
               <span className="text-foreground">412,884 ev/s</span>
             </div>
           </div>
@@ -80,16 +80,16 @@ function Telemetria() {
               { label: "Uptime 30d", value: "99.998%", trend: "SLA OK", icon: ShieldCheck },
               { label: "Carga GPU", value: "82%", trend: "saturación media", icon: Cpu },
             ].map((k) => (
-              <div key={k.label} className="col-span-6 lg:col-span-3 glass rounded-xl p-5">
+              <div key={k.label} className="col-span-6 lg:col-span-3 glass rounded-xl p-4 md:p-5">
                 <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <k.icon className="h-3.5 w-3.5 text-glow" />
-                    <div className="label-tag">{k.label}</div>
+                  <div className="flex items-center gap-2 min-w-0">
+                    <k.icon className="h-3.5 w-3.5 text-glow shrink-0" />
+                    <div className="label-tag truncate">{k.label}</div>
                   </div>
-                  <span className="font-mono-data text-[10px] text-glow">{k.trend}</span>
+                  <span className="font-mono-data text-[10px] text-glow hidden sm:inline">{k.trend}</span>
                 </div>
-                <div className="font-display text-3xl">{k.value}</div>
-                <div className="mt-3"><AreaSpark data={series(k.label.length, 40)} height={42} showGrid={false} /></div>
+                <div className="font-display text-2xl md:text-3xl font-medium">{k.value}</div>
+                <div className="mt-3"><AreaSpark data={series(k.label.length, 40)} height={40} showGrid={false} /></div>
               </div>
             ))}
           </div>
@@ -97,7 +97,7 @@ function Telemetria() {
           {/* Charts */}
           <div className="grid grid-cols-12 gap-4">
             <div className="col-span-12 lg:col-span-8 glass rounded-xl p-5">
-              <div className="flex items-start justify-between mb-4">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
                 <div>
                   <div className="label-tag mb-1">Latencia P99 · 1h</div>
                   <div className="font-display text-xl">Distribución temporal</div>
@@ -115,11 +115,15 @@ function Telemetria() {
                 <div className="label-tag mb-1">Saturación nodos · 24×6</div>
                 <div className="font-display text-xl">Mapa de calor</div>
               </div>
-              <BarMatrix rows={6} cols={24} />
-              <div className="grid grid-cols-3 gap-3 pt-2 border-t border-border/60">
-                <RadialGauge value={88} label="GPU" size={72} />
-                <RadialGauge value={62} label="CPU" size={72} />
-                <RadialGauge value={48} label="MEM" size={72} />
+              <div className="overflow-x-auto">
+                <div className="min-w-[300px]">
+                  <BarMatrix rows={6} cols={24} />
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border/60">
+                <RadialGauge value={88} label="GPU" size={64} />
+                <RadialGauge value={62} label="CPU" size={64} />
+                <RadialGauge value={48} label="MEM" size={64} />
               </div>
             </div>
           </div>
@@ -127,12 +131,12 @@ function Telemetria() {
           {/* Nodes + log */}
           <div className="grid grid-cols-12 gap-4">
             <div className="col-span-12 lg:col-span-7 glass rounded-xl p-5">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-4 gap-4">
                 <div>
                   <div className="label-tag mb-1">Inventario</div>
                   <div className="font-display text-xl">Nodos del cluster</div>
                 </div>
-                <span className="font-mono-data text-[11px] text-muted-foreground">{nodes.length} de 1,248</span>
+                <span className="font-mono-data text-[10px] text-muted-foreground shrink-0">{nodes.length} de 1,248</span>
               </div>
               <div className="overflow-x-auto rounded-lg border border-border/60">
                 <table className="w-full text-sm min-w-[640px]">
@@ -146,14 +150,14 @@ function Telemetria() {
                   <tbody>
                     {nodes.map((n, i) => (
                       <tr key={n.id} className={`border-t border-border/60 ${i % 2 ? "bg-muted/10" : ""} hover:bg-accent/30 transition`}>
-                        <td className="px-3 py-2.5 font-mono-data text-[11px] text-foreground">{n.id}</td>
-                        <td className="px-3 py-2.5 font-mono-data text-[11px] text-muted-foreground">{n.region}</td>
-                        <td className="px-3 py-2.5 font-mono-data text-[11px]">{n.role}</td>
-                        <td className="px-3 py-2.5 font-mono-data text-[11px]">{n.cpu}%</td>
-                        <td className="px-3 py-2.5 font-mono-data text-[11px] text-glow">{n.gpu}%</td>
-                        <td className="px-3 py-2.5 font-mono-data text-[11px]">{n.mem}%</td>
-                        <td className="px-3 py-2.5 font-mono-data text-[11px]">{n.lat} ms</td>
-                        <td className="px-3 py-2.5">
+                        <td className="px-3 py-2.5 font-mono-data text-[11px] text-foreground whitespace-nowrap">{n.id}</td>
+                        <td className="px-3 py-2.5 font-mono-data text-[11px] text-muted-foreground whitespace-nowrap">{n.region}</td>
+                        <td className="px-3 py-2.5 font-mono-data text-[11px] whitespace-nowrap">{n.role}</td>
+                        <td className="px-3 py-2.5 font-mono-data text-[11px] whitespace-nowrap">{n.cpu}%</td>
+                        <td className="px-3 py-2.5 font-mono-data text-[11px] text-glow whitespace-nowrap">{n.gpu}%</td>
+                        <td className="px-3 py-2.5 font-mono-data text-[11px] whitespace-nowrap">{n.mem}%</td>
+                        <td className="px-3 py-2.5 font-mono-data text-[11px] whitespace-nowrap">{n.lat} ms</td>
+                        <td className="px-3 py-2.5 whitespace-nowrap">
                           <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-[10px] font-mono-data ${statusClr[n.status]}`}>
                             {n.status === "OK" && <span className="pulse-dot" />} {n.status}
                           </span>
@@ -166,21 +170,21 @@ function Telemetria() {
             </div>
 
             <div className="col-span-12 lg:col-span-5 glass rounded-xl p-5 flex flex-col">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-4 gap-4">
                 <div>
                   <div className="label-tag mb-1">Eventos · stream</div>
                   <div className="font-display text-xl">Log en vivo</div>
                 </div>
-                <span className="inline-flex items-center gap-1.5 text-[11px] font-mono-data">
-                  <span className="pulse-dot" /> <span className="text-muted-foreground">tail -f</span>
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono-data shrink-0">
+                  <span className="pulse-dot" /> <span className="text-muted-foreground uppercase">tail -f</span>
                 </span>
               </div>
-              <div className="flex-1 rounded-lg border border-border/60 bg-background/60 p-3 font-mono-data text-[11px] leading-relaxed">
+              <div className="flex-1 rounded-lg border border-border/60 bg-background/60 p-3 font-mono-data text-[10px] md:text-[11px] leading-relaxed min-h-[200px]">
                 {events.map(([t, lvl, src, msg]) => (
-                  <div key={t + msg} className="flex gap-2 py-0.5">
-                    <span className="text-muted-foreground">{t}</span>
-                    <span className={lvlClr[lvl] ?? "text-muted-foreground"}>[{lvl}]</span>
-                    <span className="text-glow">{src}</span>
+                  <div key={t + msg} className="flex gap-2 py-0.5 min-w-0">
+                    <span className="text-muted-foreground shrink-0">{t}</span>
+                    <span className={`${lvlClr[lvl] ?? "text-muted-foreground"} shrink-0`}>[{lvl}]</span>
+                    <span className="text-glow shrink-0">{src}</span>
                     <span className="text-foreground/90 truncate">{msg}</span>
                   </div>
                 ))}

@@ -1,13 +1,16 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useLocation } from "@tanstack/react-router";
 import {
   BarChart3, FileText, Bell, Search,
   Database, Cpu, ShieldCheck, ArrowUpRight, ChevronRight, Activity, Zap,
-  Sun, Moon, Dna,
+  Sun, Moon, Dna, Menu,
 } from "lucide-react";
 import { AreaSpark, BarMatrix, RadialGauge } from "@/components/tl/MiniChart";
 import { useTheme } from "@/components/theme-provider";
-import { SideNav } from "@/components/tl/SideNav";
+import { SideNav, DashboardTopBar } from "@/components/tl/SideNav";
 import biotechHero from "@/assets/biotech-hero.jpg";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Logo } from "@/components/tl/Logo";
 
 export const Route = createFileRoute("/soluciones")({
   head: () => ({
@@ -31,35 +34,9 @@ function Soluciones() {
 
       <div className="flex-1 min-w-0 flex flex-col">
         {/* Top bar */}
-        <header className="h-14 border-b border-border/60 glass-strong flex items-center px-5 gap-4 sticky top-0 z-30">
-          <div className="flex items-center gap-2 text-[12px] font-mono-data text-muted-foreground">
-            <Link to="/" className="hover:text-foreground">TENSORLABS</Link>
-            <ChevronRight className="h-3 w-3" />
-            <span>SOLUCIONES</span>
-            <ChevronRight className="h-3 w-3" />
-            <span className="text-foreground">BIOTECH CORP</span>
-          </div>
-          <div className="flex-1 max-w-md mx-auto hidden md:flex items-center gap-2 px-3 h-9 rounded-md border border-border bg-card/40">
-            <Search className="h-3.5 w-3.5 text-muted-foreground" />
-            <input className="flex-1 bg-transparent outline-none text-sm placeholder:text-muted-foreground" placeholder="Buscar partners, modelos, runs…" />
-            <kbd className="font-mono-data text-[10px] text-muted-foreground border border-border rounded px-1.5 py-0.5">⌘K</kbd>
-          </div>
-          <div className="ml-auto flex items-center gap-2">
-            <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-full border border-border text-[11px] font-mono-data">
-              <span className="pulse-dot" /> <span className="text-muted-foreground">CLUSTER</span> <span className="text-foreground">us-east · primary</span>
-            </div>
-            <button onClick={toggle} className="h-8 w-8 grid place-items-center rounded-md border border-border hover:bg-accent/50 transition" aria-label="theme">
-              {theme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
-            </button>
-            <button className="h-8 w-8 grid place-items-center rounded-md border border-border hover:bg-accent/50 transition relative">
-              <Bell className="h-3.5 w-3.5" />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-destructive" />
-            </button>
-            <div className="h-8 w-8 rounded-md bg-gradient-to-br from-primary to-[var(--glow)] grid place-items-center text-[11px] font-display font-semibold text-background">DR</div>
-          </div>
-        </header>
+        <DashboardTopBar crumbs={["SOLUCIONES", "BIOTECH CORP"]} />
 
-        <main className="flex-1 p-5 md:p-7 space-y-5">
+        <main className="flex-1 p-4 md:p-7 space-y-5">
           <PartnerHeader />
           <KpiRow />
           <ChartsRow />
@@ -76,30 +53,31 @@ function PartnerHeader() {
     <div className="relative overflow-hidden rounded-xl border border-border/60 glass-strong">
       <div className="absolute inset-0 -z-10 opacity-50">
         <img src={biotechHero} alt="" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-card via-card/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-card via-card/80 to-transparent md:to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-card md:hidden" />
       </div>
-      <div className="p-6 md:p-8 grid grid-cols-12 gap-6 items-center">
+      <div className="p-5 md:p-8 grid grid-cols-12 gap-6 items-center">
         <div className="col-span-12 md:col-span-8">
           <div className="flex items-center gap-3 mb-3">
-            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary to-[var(--glow)] grid place-items-center">
+            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary to-[var(--glow)] grid place-items-center shrink-0">
               <Dna className="h-5 w-5 text-background" />
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="label-tag">Partner · BIO · 003</div>
-              <div className="font-display text-xl font-medium">BioTech Corp</div>
+              <div className="font-display text-xl font-medium truncate">BioTech Corp</div>
             </div>
-            <span className="ml-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-border text-[10px] font-mono-data">
+            <span className="ml-auto md:ml-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-border text-[10px] font-mono-data shrink-0">
               <span className="pulse-dot" /> ACTIVE
             </span>
           </div>
-          <h1 className="font-display text-3xl md:text-4xl tracking-tight leading-tight">
+          <h1 className="font-display text-2xl md:text-4xl tracking-tight leading-tight">
             Pipeline de bio-descubrimiento <span className="text-glow italic font-light">en producción</span>.
           </h1>
           <p className="mt-3 text-sm text-muted-foreground max-w-xl">
             42 modelos orquestando docking, plegamiento y síntesis sobre 2.1 B compuestos. Latencia media 11 min por evaluación.
           </p>
         </div>
-        <div className="col-span-12 md:col-span-4 grid grid-cols-3 gap-3">
+        <div className="col-span-12 md:col-span-4 grid grid-cols-3 gap-2 md:gap-3">
           <RadialGauge value={94} label="Eficiencia" />
           <RadialGauge value={87} label="Datos" />
           <RadialGauge value={2} label="Error" />
@@ -119,17 +97,17 @@ function KpiRow() {
   return (
     <div className="grid grid-cols-12 gap-4">
       {kpis.map((k) => (
-        <div key={k.label} className="col-span-12 sm:col-span-6 lg:col-span-3 glass rounded-xl p-5">
+        <div key={k.label} className="col-span-6 md:col-span-3 glass rounded-xl p-4 md:p-5">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <k.icon className="h-3.5 w-3.5 text-glow" />
-              <div className="label-tag">{k.label}</div>
+            <div className="flex items-center gap-2 min-w-0">
+              <k.icon className="h-3.5 w-3.5 text-glow shrink-0" />
+              <div className="label-tag truncate">{k.label}</div>
             </div>
-            <span className="font-mono-data text-[10px] text-glow">{k.trend}</span>
+            <span className="font-mono-data text-[10px] text-glow hidden sm:inline">{k.trend}</span>
           </div>
-          <div className="font-display text-3xl font-medium">{k.value}</div>
+          <div className="font-display text-2xl md:text-3xl font-medium">{k.value}</div>
           <div className="mt-3">
-            <AreaSpark data={k.spark} height={48} showGrid={false} />
+            <AreaSpark data={k.spark} height={40} showGrid={false} />
           </div>
         </div>
       ))}
@@ -141,7 +119,7 @@ function ChartsRow() {
   return (
     <div className="grid grid-cols-12 gap-4">
       <div className="col-span-12 lg:col-span-8 glass rounded-xl p-5">
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
           <div>
             <div className="label-tag mb-1">Tendencia temporal · 7d</div>
             <div className="font-display text-xl">Throughput de inferencia</div>
@@ -153,7 +131,7 @@ function ChartsRow() {
           </div>
         </div>
         <AreaSpark data={series(11, 80)} height={220} />
-        <div className="mt-4 grid grid-cols-4 gap-3 font-mono-data text-[11px]">
+        <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3 font-mono-data text-[11px]">
           {[
             ["Pico", "12.8 GB/s"],
             ["Medio", "8.4 GB/s"],
@@ -173,7 +151,11 @@ function ChartsRow() {
           <div className="label-tag">Mapa de calor · nodos</div>
           <span className="data-tick">24 × 6</span>
         </div>
-        <BarMatrix rows={6} cols={24} />
+        <div className="overflow-x-auto">
+          <div className="min-w-[300px]">
+            <BarMatrix rows={6} cols={24} />
+          </div>
+        </div>
         <div className="mt-4 flex items-center justify-between text-[11px] font-mono-data text-muted-foreground">
           <span>00:00</span>
           <span className="flex items-center gap-1.5">
@@ -228,12 +210,12 @@ function ProjectsAndLog() {
             <div className="label-tag mb-1">Inventario</div>
             <div className="font-display text-xl">Proyectos activos</div>
           </div>
-          <button className="inline-flex items-center gap-1.5 text-[12px] font-mono-data text-glow hover:underline">
+          <button className="inline-flex items-center gap-1.5 text-[12px] font-mono-data text-glow hover:underline shrink-0 ml-4">
             Ver todos <ArrowUpRight className="h-3 w-3" />
           </button>
         </div>
-        <div className="overflow-hidden rounded-lg border border-border/60">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto rounded-lg border border-border/60">
+          <table className="w-full text-sm min-w-[700px]">
             <thead className="bg-muted/40">
               <tr className="text-left">
                 {["ID", "Proyecto", "Estado", "Progreso", "ETA", "Latencia"].map((h) => (
@@ -244,21 +226,21 @@ function ProjectsAndLog() {
             <tbody>
               {projects.map((p, i) => (
                 <tr key={p.id} className={`border-t border-border/60 ${i % 2 ? "bg-muted/10" : ""} hover:bg-accent/30 transition`}>
-                  <td className="px-3 py-2.5 font-mono-data text-[11px] text-muted-foreground">{p.id}</td>
-                  <td className="px-3 py-2.5 text-foreground">{p.name}</td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-3 py-2.5 font-mono-data text-[11px] text-muted-foreground whitespace-nowrap">{p.id}</td>
+                  <td className="px-3 py-2.5 text-foreground whitespace-nowrap">{p.name}</td>
+                  <td className="px-3 py-2.5 whitespace-nowrap">
                     <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-[10px] font-mono-data ${statusClr[p.status]}`}>
                       {p.status === "Running" && <span className="pulse-dot" />} {p.status.toUpperCase()}
                     </span>
                   </td>
-                  <td className="px-3 py-2.5 w-[160px]">
+                  <td className="px-3 py-2.5 min-w-[140px]">
                     <div className="h-1.5 rounded-full bg-border overflow-hidden">
                       <div className="h-full bg-gradient-to-r from-primary to-[var(--glow)]" style={{ width: `${p.prog}%` }} />
                     </div>
                     <div className="font-mono-data text-[10px] text-muted-foreground mt-1">{p.prog}%</div>
                   </td>
-                  <td className="px-3 py-2.5 font-mono-data text-[11px]">{p.eta}</td>
-                  <td className="px-3 py-2.5 font-mono-data text-[11px] text-glow">{p.lat}</td>
+                  <td className="px-3 py-2.5 font-mono-data text-[11px] whitespace-nowrap">{p.eta}</td>
+                  <td className="px-3 py-2.5 font-mono-data text-[11px] text-glow whitespace-nowrap">{p.lat}</td>
                 </tr>
               ))}
             </tbody>
@@ -272,16 +254,16 @@ function ProjectsAndLog() {
             <div className="label-tag mb-1">Telemetría</div>
             <div className="font-display text-xl">Log de actividad</div>
           </div>
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-mono-data">
+          <span className="inline-flex items-center gap-1.5 text-[11px] font-mono-data shrink-0 ml-4">
             <span className="pulse-dot" /> <span className="text-muted-foreground">stream</span>
           </span>
         </div>
-        <div className="flex-1 rounded-lg border border-border/60 bg-background/60 p-3 font-mono-data text-[11px] leading-relaxed overflow-hidden">
+        <div className="flex-1 rounded-lg border border-border/60 bg-background/60 p-3 font-mono-data text-[11px] leading-relaxed overflow-hidden min-h-[200px]">
           {log.map(([t, lvl, src, msg]) => (
-            <div key={t + msg} className="flex gap-2 py-0.5">
-              <span className="text-muted-foreground">{t}</span>
-              <span className={lvlClr[lvl] ?? "text-muted-foreground"}>[{lvl}]</span>
-              <span className="text-glow">{src}</span>
+            <div key={t + msg} className="flex gap-2 py-0.5 min-w-0">
+              <span className="text-muted-foreground shrink-0">{t}</span>
+              <span className={`${lvlClr[lvl] ?? "text-muted-foreground"} shrink-0`}>[{lvl}]</span>
+              <span className="text-glow shrink-0">{src}</span>
               <span className="text-foreground/80 truncate">{msg}</span>
             </div>
           ))}

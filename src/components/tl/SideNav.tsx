@@ -2,9 +2,11 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   LayoutDashboard, Building2, BarChart3, FileText, Settings,
-  Database, Cpu, ShieldCheck, Activity, ChevronLeft,
+  Database, Cpu, ShieldCheck, Activity, ChevronLeft, Menu,
 } from "lucide-react";
 import { Logo } from "./Logo";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 type Item = {
   icon: typeof LayoutDashboard;
@@ -39,24 +41,9 @@ const groups: { label: string; items: (Item | { icon: typeof LayoutDashboard; la
   },
 ];
 
-export function SideNav() {
-  const [collapsed, setCollapsed] = useState(false);
-  const { pathname } = useLocation();
-
+function SideNavContent({ collapsed, pathname }: { collapsed: boolean; pathname: string }) {
   return (
-    <aside
-      className={`shrink-0 border-r border-border/60 bg-sidebar transition-[width] duration-300 ${collapsed ? "w-[68px]" : "w-[244px]"} flex flex-col sticky top-0 h-screen`}
-    >
-      <div className="h-14 border-b border-sidebar-border flex items-center px-4 gap-2">
-        <Link to="/">{collapsed ? <Logo className="[&>span]:hidden" /> : <Logo />}</Link>
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="ml-auto h-7 w-7 grid place-items-center rounded-md hover:bg-sidebar-accent transition"
-          aria-label="collapse"
-        >
-          <ChevronLeft className={`h-3.5 w-3.5 transition-transform ${collapsed ? "rotate-180" : ""}`} />
-        </button>
-      </div>
+    <>
       <nav className="flex-1 overflow-y-auto p-3 space-y-5">
         {groups.map((g) => (
           <div key={g.label}>
@@ -104,26 +91,73 @@ export function SideNav() {
           </div>
         </div>
       )}
+    </>
+  );
+}
+
+export function SideNav() {
+  const [collapsed, setCollapsed] = useState(false);
+  const { pathname } = useLocation();
+  const isMobile = useIsMobile();
+
+  if (isMobile) return null;
+
+  return (
+    <aside
+      className={`shrink-0 border-r border-border/60 bg-sidebar transition-[width] duration-300 ${collapsed ? "w-[68px]" : "w-[244px]"} flex flex-col sticky top-0 h-screen hidden md:flex`}
+    >
+      <div className="h-14 border-b border-sidebar-border flex items-center px-4 gap-2">
+        <Link to="/">{collapsed ? <Logo className="[&>span]:hidden" /> : <Logo />}</Link>
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="ml-auto h-7 w-7 grid place-items-center rounded-md hover:bg-sidebar-accent transition"
+          aria-label="collapse"
+        >
+          <ChevronLeft className={`h-3.5 w-3.5 transition-transform ${collapsed ? "rotate-180" : ""}`} />
+        </button>
+      </div>
+      <SideNavContent collapsed={collapsed} pathname={pathname} />
     </aside>
   );
 }
 
 export function DashboardTopBar({ crumbs }: { crumbs: string[] }) {
+  const { pathname } = useLocation();
   return (
-    <header className="h-14 border-b border-border/60 glass-strong flex items-center px-5 gap-4 sticky top-0 z-30">
-      <div className="flex items-center gap-2 text-[12px] font-mono-data text-muted-foreground">
-        <Link to="/" className="hover:text-foreground">TENSORLABS</Link>
-        {crumbs.map((c, i) => (
-          <span key={c} className="flex items-center gap-2">
-            <span>›</span>
-            <span className={i === crumbs.length - 1 ? "text-foreground" : ""}>{c}</span>
-          </span>
-        ))}
+    <header className="h-14 border-b border-border/60 glass-strong flex items-center px-4 md:px-5 gap-3 md:gap-4 sticky top-0 z-30">
+      <div className="flex items-center gap-3">
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <button className="h-8 w-8 grid place-items-center rounded-md border border-border hover:bg-accent/50 transition">
+                <Menu className="h-4 w-4" />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="p-0 w-[244px] bg-sidebar border-r-border/60">
+              <div className="flex flex-col h-full">
+                <div className="h-14 border-b border-sidebar-border flex items-center px-4">
+                  <Logo />
+                </div>
+                <SideNavContent collapsed={false} pathname={pathname} />
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+        <div className="flex items-center gap-2 text-[11px] md:text-[12px] font-mono-data text-muted-foreground truncate">
+          <Link to="/" className="hover:text-foreground">TENSORLABS</Link>
+          {crumbs.map((c, i) => (
+            <span key={c} className="flex items-center gap-2">
+              <span>›</span>
+              <span className={i === crumbs.length - 1 ? "text-foreground truncate" : "truncate"}>{c}</span>
+            </span>
+          ))}
+        </div>
       </div>
       <div className="ml-auto flex items-center gap-2">
         <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-full border border-border text-[11px] font-mono-data">
           <span className="pulse-dot" /> <span className="text-muted-foreground">CLUSTER</span> <span className="text-foreground">us-east · primary</span>
         </div>
+        <div className="h-8 w-8 rounded-md bg-gradient-to-br from-primary to-[var(--glow)] grid place-items-center text-[11px] font-display font-semibold text-background">DR</div>
       </div>
     </header>
   );

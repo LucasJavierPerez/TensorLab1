@@ -1,8 +1,37 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Mail, MapPin, Phone, ArrowUpRight, Building2, MessageSquare } from "lucide-react";
+import { Mail, MapPin, Phone, ArrowUpRight, Building2, MessageSquare, Loader2, MessageCircle } from "lucide-react";
 import { Header } from "@/components/tl/Header";
 import { Footer } from "@/components/tl/Footer";
+import { createServerFn } from "@tanstack/react-start";
+import { Resend } from "resend";
+
+const resend = new Resend("re_Di84QaJW_Q9sFKP3tmuhr96fx86XaC5gV");
+
+const sendContactEmail = createServerFn({ method: "POST" })
+  .handler(async ({ data }: { data: { name: string; email: string; company: string; sector: string; kind: string; message: string } }) => {
+    try {
+      await resend.emails.send({
+        from: "TensorLabs <onboarding@resend.dev>",
+        to: ["lucasenrio@gmail.com"],
+        subject: `Nuevo Ticket: ${data.kind} - ${data.company}`,
+        html: `
+          <h1>Nuevo mensaje de contacto</h1>
+          <p><strong>Nombre:</strong> ${data.name}</p>
+          <p><strong>Email:</strong> ${data.email}</p>
+          <p><strong>Empresa:</strong> ${data.company}</p>
+          <p><strong>Sector:</strong> ${data.sector}</p>
+          <p><strong>Tipo de consulta:</strong> ${data.kind}</p>
+          <p><strong>Mensaje:</strong></p>
+          <p>${data.message}</p>
+        `,
+      });
+      return { success: true };
+    } catch (error) {
+      console.error("Error sending email:", error);
+      throw new Error("Failed to send email");
+    }
+  });
 
 export const Route = createFileRoute("/contacto")({
   head: () => ({
@@ -17,20 +46,47 @@ export const Route = createFileRoute("/contacto")({
 });
 
 const channels = [
-  { icon: Mail, label: "Correo", value: "ops@tensorlabs.io", note: "Respuesta < 4h hábiles" },
-  { icon: Phone, label: "Línea directa", value: "+54 11 5238 0042", note: "L–V · 09:00–19:00 ART" },
-  { icon: MapPin, label: "Sede", value: "Buenos Aires · Madrid · Stockholm", note: "Soporte 24/7/365" },
+  { icon: Mail, label: "Canal Digital", value: "vía Resend", note: "Respuesta < 4h hábiles", link: "#ticket" },
+  { icon: MessageCircle, label: "WhatsApp", value: "+54 9 358 424 1371", note: "Atención inmediata", link: "https://wa.me/5493584241371" },
+  { icon: MapPin, label: "Sede Central", value: "Río Cuarto · Córdoba", note: "Soporte 24/7/365", link: null },
 ];
 
 const departments = [
-  { code: "DEP · 01", title: "Ingeniería de plataforma", desc: "Integraciones, despliegues edge/cloud y SLAs.", contact: "platform@tensorlabs.io" },
-  { code: "DEP · 02", title: "Ciencia de datos", desc: "Co-desarrollo de modelos a medida por dominio.", contact: "ml@tensorlabs.io" },
-  { code: "DEP · 03", title: "Cumplimiento & Seguridad", desc: "SOC2, ISO 27001, gobernanza de datos.", contact: "trust@tensorlabs.io" },
-  { code: "DEP · 04", title: "Alianzas industriales", desc: "Programas de partner para verticales críticos.", contact: "partners@tensorlabs.io" },
+  { code: "DEP · 01", title: "Ingeniería de plataforma", desc: "Integraciones, despliegues edge/cloud y SLAs." },
+  { code: "DEP · 02", title: "Ciencia de datos", desc: "Co-desarrollo de modelos a medida por dominio." },
+  { code: "DEP · 03", title: "Cumplimiento & Seguridad", desc: "SOC2, ISO 27001, gobernanza de datos." },
+  { code: "DEP · 04", title: "Alianzas industriales", desc: "Programas de partner para verticales críticos." },
 ];
 
 function Contacto() {
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      company: formData.get("company") as string,
+      sector: formData.get("sector") as string,
+      kind: formData.get("kind") as string,
+      message: formData.get("message") as string,
+    };
+
+    try {
+      await sendContactEmail({ data });
+      setSent(true);
+    } catch (err) {
+      setError("Hubo un error al enviar el ticket. Por favor, intente nuevamente.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-atmosphere">
@@ -55,13 +111,28 @@ function Contacto() {
 
           <div className="grid grid-cols-12 gap-3">
             {channels.map((c) => (
-              <div key={c.label} className="col-span-12 md:col-span-4 glass-strong rounded-xl p-5">
-                <div className="flex items-center justify-between mb-4">
-                  <c.icon className="h-4 w-4 text-glow" />
-                  <span className="data-tick">{c.label.toUpperCase()}</span>
-                </div>
-                <div className="font-display text-xl">{c.value}</div>
-                <div className="font-mono-data text-[11px] text-muted-foreground mt-2">{c.note}</div>
+              <div key={c.label} className="col-span-12 md:col-span-4">
+                {c.link ? (
+                  <a href={c.link} target={c.link.startsWith("http") ? "_blank" : "_self"} rel="noreferrer" className="block glass-strong rounded-xl p-5 hover:border-glow/40 transition group">
+                    <div className="flex items-center justify-between mb-4">
+                      <c.icon className="h-4 w-4 text-glow" />
+                      <span className="data-tick">{c.label.toUpperCase()}</span>
+                    </div>
+                    <div className="font-display text-xl group-hover:text-glow transition flex items-center gap-2">
+                      {c.value} <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition" />
+                    </div>
+                    <div className="font-mono-data text-[11px] text-muted-foreground mt-2">{c.note}</div>
+                  </a>
+                ) : (
+                  <div className="glass-strong rounded-xl p-5">
+                    <div className="flex items-center justify-between mb-4">
+                      <c.icon className="h-4 w-4 text-glow" />
+                      <span className="data-tick">{c.label.toUpperCase()}</span>
+                    </div>
+                    <div className="font-display text-xl">{c.value}</div>
+                    <div className="font-mono-data text-[11px] text-muted-foreground mt-2">{c.note}</div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -71,7 +142,7 @@ function Contacto() {
       <section className="border-b border-border/60 py-16">
         <div className="mx-auto max-w-[1400px] px-6 grid grid-cols-12 gap-6">
           <div className="col-span-12 lg:col-span-7">
-            <div className="glass rounded-xl p-6 md:p-8">
+            <div id="ticket" className="glass rounded-xl p-6 md:p-8">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <div className="label-tag mb-1">Formulario · TICKET-NEW</div>
@@ -85,12 +156,12 @@ function Contacto() {
               {sent ? (
                 <div className="border border-glow/40 rounded-lg p-6 text-center">
                   <MessageSquare className="h-6 w-6 text-glow mx-auto mb-3" />
-                  <div className="font-display text-xl mb-1">Ticket recibido.</div>
-                  <p className="text-sm text-muted-foreground">Un ingeniero responderá en menos de 4 horas hábiles. ID: <span className="font-mono-data text-foreground">TKT-{Date.now().toString().slice(-6)}</span></p>
+                  <div className="font-display text-xl mb-1">Ticket enviado con éxito.</div>
+                  <p className="text-sm text-muted-foreground">Un ingeniero responderá en menos de 4 horas hábiles.</p>
                 </div>
               ) : (
                 <form
-                  onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+                  onSubmit={handleSubmit}
                   className="space-y-4"
                 >
                   <div className="grid grid-cols-2 gap-4">
@@ -105,19 +176,32 @@ function Contacto() {
                   <div>
                     <label className="label-tag block mb-1.5">Mensaje</label>
                     <textarea
+                      name="message"
                       required
                       rows={5}
                       className="w-full rounded-md border border-border bg-card/40 px-3 py-2 text-sm outline-none focus:border-glow transition resize-none"
                       placeholder="Describa contexto, escala y horizonte temporal del proyecto…"
                     />
                   </div>
+                  
+                  {error && (
+                    <div className="text-xs text-red-500 font-mono-data bg-red-500/10 p-2 rounded border border-red-500/20">
+                      {error}
+                    </div>
+                  )}
+
                   <div className="flex items-center justify-between pt-2">
                     <span className="font-mono-data text-[10px] text-muted-foreground">PGP disponible · cifrado E2E opcional</span>
                     <button
                       type="submit"
-                      className="inline-flex items-center gap-1.5 h-10 px-5 rounded-md bg-foreground text-background font-medium hover:opacity-90 transition"
+                      disabled={loading}
+                      className="inline-flex items-center gap-1.5 h-10 px-5 rounded-md bg-foreground text-background font-medium hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Enviar ticket <ArrowUpRight className="h-4 w-4" />
+                      {loading ? (
+                        <>Procesando <Loader2 className="h-4 w-4 animate-spin" /></>
+                      ) : (
+                        <>Enviar ticket <ArrowUpRight className="h-4 w-4" /></>
+                      )}
                     </button>
                   </div>
                 </form>
@@ -135,9 +219,9 @@ function Contacto() {
                 </div>
                 <div className="font-display text-lg">{d.title}</div>
                 <p className="text-sm text-muted-foreground mt-1">{d.desc}</p>
-                <a href={`mailto:${d.contact}`} className="mt-3 inline-flex items-center gap-1 font-mono-data text-[11px] text-glow hover:underline">
-                  {d.contact} <ArrowUpRight className="h-3 w-3" />
-                </a>
+                <div className="mt-3 inline-flex items-center gap-1 font-mono-data text-[11px] text-glow">
+                   CONTACTO VÍA TICKET <ArrowUpRight className="h-3 w-3" />
+                </div>
               </div>
             ))}
           </div>

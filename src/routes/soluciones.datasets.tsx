@@ -46,9 +46,9 @@ function Datasets() {
       <SideNav />
       <div className="flex-1 min-w-0 flex flex-col">
         <DashboardTopBar crumbs={["SOLUCIONES", "DATASETS"]} />
-        <main className="flex-1 p-5 md:p-7 space-y-5">
+        <main className="flex-1 p-4 md:p-7 space-y-5">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-4">
             <div>
               <div className="label-tag mb-1.5">Catálogo · INFRAESTRUCTURA</div>
               <h1 className="font-display text-3xl md:text-4xl tracking-tight">
@@ -58,10 +58,10 @@ function Datasets() {
                 Linaje verificado, frescura instrumentada, permisos por partner. Ingesta continua desde 1,248 nodos edge.
               </p>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 px-3 h-9 rounded-md border border-border bg-card/40 w-72">
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-2 px-3 h-9 rounded-md border border-border bg-card/40 w-full sm:w-72">
                 <Search className="h-3.5 w-3.5 text-muted-foreground" />
-                <input className="flex-1 bg-transparent outline-none text-sm placeholder:text-muted-foreground" placeholder="Buscar dataset, dominio…" />
+                <input className="flex-1 bg-transparent outline-none text-sm placeholder:text-muted-foreground min-w-0" placeholder="Buscar dataset, dominio…" />
               </div>
               <button className="h-9 px-3 rounded-md border border-border hover:bg-accent/50 transition inline-flex items-center gap-1.5 text-[13px]">
                 <Filter className="h-3.5 w-3.5" /> Filtros
@@ -80,7 +80,7 @@ function Datasets() {
               { label: "Volumen", value: totalSize, trend: "+ 84 GB / 24h" },
               { label: "Calidad media", value: `${avgQuality}%`, trend: "σ 0.21", icon: ShieldCheck },
             ].map((k) => (
-              <div key={k.label} className="col-span-6 lg:col-span-3 glass rounded-xl p-5">
+              <div key={k.label} className="col-span-12 sm:col-span-6 lg:col-span-3 glass rounded-xl p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="label-tag">{k.label}</div>
                   <span className="font-mono-data text-[10px] text-glow">{k.trend}</span>
@@ -92,14 +92,14 @@ function Datasets() {
           </div>
 
           {/* Table */}
-          <div className="glass rounded-xl p-5">
-            <div className="flex items-center justify-between mb-4">
+          <div className="glass rounded-xl p-4 md:p-5">
+            <div className="flex items-center justify-between mb-4 gap-4">
               <div>
                 <div className="label-tag mb-1">Inventario</div>
                 <div className="font-display text-xl">Datasets registrados</div>
               </div>
-              <button className="inline-flex items-center gap-1.5 text-[12px] font-mono-data text-glow hover:underline">
-                Ver linaje completo <ArrowUpRight className="h-3 w-3" />
+              <button className="inline-flex items-center gap-1.5 text-[12px] font-mono-data text-glow hover:underline shrink-0">
+                Ver linaje <ArrowUpRight className="h-3 w-3" />
               </button>
             </div>
             <div className="overflow-x-auto rounded-lg border border-border/60">
@@ -114,16 +114,16 @@ function Datasets() {
                 <tbody>
                   {datasets.map((d, i) => (
                     <tr key={d.id} className={`border-t border-border/60 ${i % 2 ? "bg-muted/10" : ""} hover:bg-accent/30 transition`}>
-                      <td className="px-3 py-2.5 font-mono-data text-[11px] text-muted-foreground">{d.id}</td>
-                      <td className="px-3 py-2.5 text-foreground">{d.name}</td>
-                      <td className="px-3 py-2.5">
+                      <td className="px-3 py-2.5 font-mono-data text-[11px] text-muted-foreground whitespace-nowrap">{d.id}</td>
+                      <td className="px-3 py-2.5 text-foreground whitespace-nowrap">{d.name}</td>
+                      <td className="px-3 py-2.5 whitespace-nowrap">
                         <span className={`inline-flex items-center px-2 py-0.5 rounded-full border text-[10px] font-mono-data ${domainClr[d.domain]}`}>
                           {d.domain}
                         </span>
                       </td>
-                      <td className="px-3 py-2.5 font-mono-data text-[11px]">{d.rows}</td>
-                      <td className="px-3 py-2.5 font-mono-data text-[11px]">{d.size}</td>
-                      <td className="px-3 py-2.5 w-[140px]">
+                      <td className="px-3 py-2.5 font-mono-data text-[11px] whitespace-nowrap">{d.rows}</td>
+                      <td className="px-3 py-2.5 font-mono-data text-[11px] whitespace-nowrap">{d.size}</td>
+                      <td className="px-3 py-2.5 w-[140px] min-w-[140px]">
                         <div className="flex items-center gap-2">
                           <div className="flex-1 h-1.5 rounded-full bg-border overflow-hidden">
                             <div className="h-full bg-gradient-to-r from-primary to-[var(--glow)]" style={{ width: `${d.quality}%` }} />
@@ -131,8 +131,8 @@ function Datasets() {
                           <span className="font-mono-data text-[10px] text-glow">{d.quality}%</span>
                         </div>
                       </td>
-                      <td className="px-3 py-2.5 font-mono-data text-[11px] text-muted-foreground">{d.fresh}</td>
-                      <td className="px-3 py-2.5">
+                      <td className="px-3 py-2.5 font-mono-data text-[11px] text-muted-foreground whitespace-nowrap">{d.fresh}</td>
+                      <td className="px-3 py-2.5 whitespace-nowrap">
                         <span className="font-mono-data text-[10px] text-muted-foreground border border-border rounded px-1.5 py-0.5">{d.access}</span>
                       </td>
                     </tr>
