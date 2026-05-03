@@ -3,35 +3,7 @@ import { useState } from "react";
 import { Mail, MapPin, Phone, ArrowUpRight, Building2, MessageSquare, Loader2, MessageCircle } from "lucide-react";
 import { Header } from "@/components/tl/Header";
 import { Footer } from "@/components/tl/Footer";
-import { createServerFn } from "@tanstack/react-start";
-import { Resend } from "resend";
-
-const resend = new Resend("re_Di84QaJW_Q9sFKP3tmuhr96fx86XaC5gV");
-
-const sendContactEmail = createServerFn({ method: "POST" })
-  .handler(async ({ data }: { data: { name: string; email: string; company: string; sector: string; kind: string; message: string } }) => {
-    try {
-      await resend.emails.send({
-        from: "TensorLabs <onboarding@resend.dev>",
-        to: ["lucasenrio@gmail.com"],
-        subject: `Nuevo Ticket: ${data.kind} - ${data.company}`,
-        html: `
-          <h1>Nuevo mensaje de contacto</h1>
-          <p><strong>Nombre:</strong> ${data.name}</p>
-          <p><strong>Email:</strong> ${data.email}</p>
-          <p><strong>Empresa:</strong> ${data.company}</p>
-          <p><strong>Sector:</strong> ${data.sector}</p>
-          <p><strong>Tipo de consulta:</strong> ${data.kind}</p>
-          <p><strong>Mensaje:</strong></p>
-          <p>${data.message}</p>
-        `,
-      });
-      return { success: true };
-    } catch (error) {
-      console.error("Error sending email:", error);
-      throw new Error("Failed to send email");
-    }
-  });
+import { sendContactEmail } from "@/lib/contact.server";
 
 export const Route = createFileRoute("/contacto")({
   head: () => ({
@@ -46,8 +18,8 @@ export const Route = createFileRoute("/contacto")({
 });
 
 const channels = [
-  { icon: Mail, label: "Canal Digital", value: "vía Resend", note: "Respuesta < 4h hábiles", link: "#ticket" },
-  { icon: MessageCircle, label: "WhatsApp", value: "+54 9 358 424 1371", note: "Atención inmediata", link: "https://wa.me/5493584241371" },
+  { icon: Mail, label: "Canal Digital", value: "Mail", note: "Respuesta < 4h hábiles", link: "#ticket" },
+  { icon: MessageCircle, label: "WhatsApp", value: "WhatsApp", note: "Atención inmediata", link: "https://wa.me/5493584241371" },
   { icon: MapPin, label: "Sede Central", value: "Río Cuarto · Córdoba", note: "Soporte 24/7/365", link: null },
 ];
 
@@ -98,8 +70,8 @@ function Contacto() {
             <div className="col-span-12 md:col-span-7">
               <div className="label-tag mb-4">— Canal directo · operación 24/7</div>
               <h1 className="font-display text-[44px] md:text-[80px] leading-[0.95] tracking-tight font-medium">
-                Hable con un <span className="italic font-light text-glow">ingeniero</span>,<br />
-                no con un formulario.
+                Solicitar evaluación <span className="italic font-light text-glow"></span><br />
+                
               </h1>
             </div>
             <div className="col-span-12 md:col-span-5 md:pl-6 md:border-l border-border/60 self-end">

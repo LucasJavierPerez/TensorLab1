@@ -286,4 +286,11 @@
     to { stroke-dashoffset: 0; }
   }
   .draw-line { stroke-dasharray: 1000; animation: draw-line 2.4s ease-out forwards; }
+  .text-glow-green {
+  color: #1c909a; /* Verde neón clínico */
+  text-shadow: 
+    0 0 15px rgba(46, 246, 164, 0.4),
+    0 0 30px rgba(46, 246, 164, 0.1);
+  filter: brightness(1.2);
+}
 }

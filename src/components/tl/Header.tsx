@@ -9,8 +9,8 @@ export function Header() {
 
   const navLinks = [
     { to: "/", label: "Plataforma", exact: true },
-    { to: "/soluciones", label: "Soluciones" },
-    { href: "/#ecosistemas", label: "Industrias" },
+    { to: "/industria", label: "Industrias" },
+    { to: "/laboratorio", label: "Laboratorio" },
     { to: "/contacto", label: "Contacto" },
   ];
 
@@ -53,16 +53,6 @@ export function Header() {
                           )}
                         </SheetClose>
                       ))}
-                      <div className="mt-4 pt-6 border-t border-border/60">
-                         <SheetClose asChild>
-                          <Link
-                            to="/soluciones"
-                            className="flex items-center justify-between h-10 px-3 rounded-md bg-foreground text-background text-sm font-medium hover:opacity-90 transition"
-                          >
-                            Acceder al panel <ArrowUpRight className="h-4 w-4" />
-                          </Link>
-                        </SheetClose>
-                      </div>
                     </nav>
                   </div>
                 </SheetContent>
@@ -106,10 +96,10 @@ export function Header() {
               {theme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
             </button>
             <Link
-              to="/soluciones"
+              to="/contacto"
               className="hidden sm:inline-flex items-center gap-1.5 h-8 px-3 rounded-md bg-foreground text-background text-[12px] font-medium hover:opacity-90 transition"
             >
-              Acceder al panel <ArrowUpRight className="h-3.5 w-3.5" />
+              Solicitar demo <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>

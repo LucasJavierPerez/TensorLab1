@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { ArrowUpRight } from "lucide-react";
 
-const cols: { title: string; items: { label: string; to?: "/" | "/soluciones" | "/contacto" | "/soluciones/datasets" | "/soluciones/telemetria" }[] }[] = [
+const cols: { title: string; items: { label: string; to?: "/" | "/laboratorio" | "/contacto" }[] }[] = [
   {
     title: "Ecosistemas",
     items: [
@@ -17,9 +17,9 @@ const cols: { title: string; items: { label: string; to?: "/" | "/soluciones" | 
   {
     title: "Plataforma",
     items: [
-      { label: "Panel de soluciones", to: "/soluciones" },
-      { label: "Datasets", to: "/soluciones/datasets" },
-      { label: "Telemetría", to: "/soluciones/telemetria" },
+      { label: "Panel de soluciones", to: "/laboratorio" },
+      { label: "Datasets", to: "/laboratorio" },
+      { label: "Telemetría", to: "/laboratorio" },
       { label: "Contacto", to: "/contacto" },
       { label: "API · SDK" },
     ],
@@ -83,9 +83,9 @@ export function Footer() {
         <div className="mt-12 pt-6 border-t border-border/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[11px] font-mono-data text-muted-foreground">
           <div>© 2026 TENSORLABS · INSTRUMENT-GRADE INTELLIGENCE</div>
           <div className="flex gap-6">
-            <span>SOC2 · ISO 27001</span>
+            <span>Diseñado bajo lineamientos ISO 27001</span>
             <span>BUILD 2026.05.01-α</span>
-            <span>STO · BUE · MAD</span>
+            <span>ARG · RIV · CBA</span>
           </div>
         </div>
       </div>

@@ -9,15 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SolucionesRouteImport } from './routes/soluciones'
+import { Route as LaboratorioRouteImport } from './routes/laboratorio'
+import { Route as IndustriaRouteImport } from './routes/industria'
 import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SolucionesTelemetriaRouteImport } from './routes/soluciones.telemetria'
-import { Route as SolucionesDatasetsRouteImport } from './routes/soluciones.datasets'
 
-const SolucionesRoute = SolucionesRouteImport.update({
-  id: '/soluciones',
-  path: '/soluciones',
+const LaboratorioRoute = LaboratorioRouteImport.update({
+  id: '/laboratorio',
+  path: '/laboratorio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustriaRoute = IndustriaRouteImport.update({
+  id: '/industria',
+  path: '/industria',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactoRoute = ContactoRouteImport.update({
@@ -30,76 +34,55 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SolucionesTelemetriaRoute = SolucionesTelemetriaRouteImport.update({
-  id: '/telemetria',
-  path: '/telemetria',
-  getParentRoute: () => SolucionesRoute,
-} as any)
-const SolucionesDatasetsRoute = SolucionesDatasetsRouteImport.update({
-  id: '/datasets',
-  path: '/datasets',
-  getParentRoute: () => SolucionesRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/contacto': typeof ContactoRoute
-  '/soluciones': typeof SolucionesRouteWithChildren
-  '/soluciones/datasets': typeof SolucionesDatasetsRoute
-  '/soluciones/telemetria': typeof SolucionesTelemetriaRoute
+  '/industria': typeof IndustriaRoute
+  '/laboratorio': typeof LaboratorioRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/contacto': typeof ContactoRoute
-  '/soluciones': typeof SolucionesRouteWithChildren
-  '/soluciones/datasets': typeof SolucionesDatasetsRoute
-  '/soluciones/telemetria': typeof SolucionesTelemetriaRoute
+  '/industria': typeof IndustriaRoute
+  '/laboratorio': typeof LaboratorioRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/contacto': typeof ContactoRoute
-  '/soluciones': typeof SolucionesRouteWithChildren
-  '/soluciones/datasets': typeof SolucionesDatasetsRoute
-  '/soluciones/telemetria': typeof SolucionesTelemetriaRoute
+  '/industria': typeof IndustriaRoute
+  '/laboratorio': typeof LaboratorioRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/contacto'
-    | '/soluciones'
-    | '/soluciones/datasets'
-    | '/soluciones/telemetria'
+  fullPaths: '/' | '/contacto' | '/industria' | '/laboratorio'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/contacto'
-    | '/soluciones'
-    | '/soluciones/datasets'
-    | '/soluciones/telemetria'
-  id:
-    | '__root__'
-    | '/'
-    | '/contacto'
-    | '/soluciones'
-    | '/soluciones/datasets'
-    | '/soluciones/telemetria'
+  to: '/' | '/contacto' | '/industria' | '/laboratorio'
+  id: '__root__' | '/' | '/contacto' | '/industria' | '/laboratorio'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ContactoRoute: typeof ContactoRoute
-  SolucionesRoute: typeof SolucionesRouteWithChildren
+  IndustriaRoute: typeof IndustriaRoute
+  LaboratorioRoute: typeof LaboratorioRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/soluciones': {
-      id: '/soluciones'
-      path: '/soluciones'
-      fullPath: '/soluciones'
-      preLoaderRoute: typeof SolucionesRouteImport
+    '/laboratorio': {
+      id: '/laboratorio'
+      path: '/laboratorio'
+      fullPath: '/laboratorio'
+      preLoaderRoute: typeof LaboratorioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industria': {
+      id: '/industria'
+      path: '/industria'
+      fullPath: '/industria'
+      preLoaderRoute: typeof IndustriaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contacto': {
@@ -116,41 +99,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/soluciones/telemetria': {
-      id: '/soluciones/telemetria'
-      path: '/telemetria'
-      fullPath: '/soluciones/telemetria'
-      preLoaderRoute: typeof SolucionesTelemetriaRouteImport
-      parentRoute: typeof SolucionesRoute
-    }
-    '/soluciones/datasets': {
-      id: '/soluciones/datasets'
-      path: '/datasets'
-      fullPath: '/soluciones/datasets'
-      preLoaderRoute: typeof SolucionesDatasetsRouteImport
-      parentRoute: typeof SolucionesRoute
-    }
   }
 }
-
-interface SolucionesRouteChildren {
-  SolucionesDatasetsRoute: typeof SolucionesDatasetsRoute
-  SolucionesTelemetriaRoute: typeof SolucionesTelemetriaRoute
-}
-
-const SolucionesRouteChildren: SolucionesRouteChildren = {
-  SolucionesDatasetsRoute: SolucionesDatasetsRoute,
-  SolucionesTelemetriaRoute: SolucionesTelemetriaRoute,
-}
-
-const SolucionesRouteWithChildren = SolucionesRoute._addFileChildren(
-  SolucionesRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ContactoRoute: ContactoRoute,
-  SolucionesRoute: SolucionesRouteWithChildren,
+  IndustriaRoute: IndustriaRoute,
+  LaboratorioRoute: LaboratorioRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
