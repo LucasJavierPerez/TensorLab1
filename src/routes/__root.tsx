@@ -2,6 +2,7 @@ import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/r
 import { ThemeProvider } from "@/components/theme-provider";
 
 import appCss from "../styles.css?url";
+import faviconUrl from "../assets/favicon.svg?url";
 
 function NotFoundComponent() {
   return (
@@ -39,7 +40,10 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/svg+xml", href: faviconUrl },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
