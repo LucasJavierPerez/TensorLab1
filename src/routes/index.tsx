@@ -66,7 +66,7 @@ function Hero() {
             <h1 className="font-display text-[44px] sm:text-6xl md:text-[88px] leading-[0.95] tracking-tight font-medium">
                  Precisión predictiva de grado industrial: 
                 <span className="italic font-bold text-glow-green block mt-2">
-                  transformamos datos en certezas
+                  transformamos datos en certezas.
                 </span>
             </h1>
           </div>
