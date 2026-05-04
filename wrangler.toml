@@ -8,3 +8,7 @@ directory = "dist/client"
 
 [observability]
 enabled = true
+
+[[rules]]
+type = "ESModule"
+globs = ["**/*.js", "**/*.mjs"]
