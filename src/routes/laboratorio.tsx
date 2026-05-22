@@ -44,12 +44,43 @@ function Laboratorio() {
   const [selected, setSelected] = useState(NOTEBOOK_EXAMPLES[0]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#f8f9fa] dark:bg-[#0d1117] text-foreground transition-colors">
+    <div className="flex flex-col h-dvh bg-[#f8f9fa] dark:bg-[#0d1117] text-foreground transition-colors">
       <Header />
 
-      <div className="flex flex-1 overflow-hidden" style={{ height: "calc(100vh - 64px)" }}>
-        {/* Sidebar */}
-        <aside className="w-72 shrink-0 border-r border-border/50 bg-background flex flex-col">
+      {/* Mobile: tab bar + iframe stacked. Desktop: sidebar + iframe side by side */}
+      <div className="flex flex-col md:flex-row flex-1 overflow-hidden min-h-0">
+
+        {/* Mobile tab bar */}
+        <div className="md:hidden shrink-0 border-b border-border/50 bg-background">
+          <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border/30">
+            <FlaskConical className="h-4 w-4 text-glow shrink-0" />
+            <span className="text-xs font-medium text-glow">Research Lab</span>
+          </div>
+          <div className="flex overflow-x-auto scrollbar-none px-2 py-2 gap-1.5">
+            {NOTEBOOK_EXAMPLES.map((nb) => {
+              const isActive = selected.file === nb.file;
+              return (
+                <button
+                  key={nb.file}
+                  onClick={() => setSelected(nb)}
+                  className={[
+                    "shrink-0 px-3 py-2 rounded-lg border text-left transition-all duration-150",
+                    isActive
+                      ? "bg-glow/10 border-glow/20"
+                      : "border-transparent bg-muted/40 hover:bg-muted/60",
+                  ].join(" ")}
+                >
+                  <span className={["text-xs font-medium whitespace-nowrap", isActive ? "text-glow" : ""].join(" ")}>
+                    {nb.title}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Desktop sidebar */}
+        <aside className="hidden md:flex w-72 shrink-0 border-r border-border/50 bg-background flex-col">
           <div className="px-4 py-5 border-b border-border/50 space-y-1">
             <div className="flex items-center gap-2 text-glow">
               <FlaskConical className="h-4 w-4" />
@@ -109,7 +140,7 @@ function Laboratorio() {
         </aside>
 
         {/* Iframe panel */}
-        <main className="flex-1 overflow-hidden bg-background">
+        <main className="flex-1 overflow-hidden bg-background min-h-0">
           <iframe
             key={selected.file}
             src={`/notebooks/${selected.file}`}
@@ -119,13 +150,13 @@ function Laboratorio() {
         </main>
       </div>
 
-      <footer className="shrink-0 border-t border-border/50 px-6 py-2.5 flex items-center justify-between bg-background">
+      <footer className="shrink-0 border-t border-border/50 px-4 md:px-6 py-2.5 flex items-center justify-between bg-background">
         <span className="text-[10px] font-mono-data text-muted-foreground/50 uppercase tracking-widest">
           © 2026 TensorLabs
         </span>
-        <div className="flex items-center gap-4 text-[10px] font-mono-data text-muted-foreground/40">
+        <div className="flex items-center gap-3 md:gap-4 text-[10px] font-mono-data text-muted-foreground/40">
           <span>Uptime 99.998%</span>
-          <span>python · marimo</span>
+          <span className="hidden sm:inline">python · marimo</span>
         </div>
       </footer>
     </div>
