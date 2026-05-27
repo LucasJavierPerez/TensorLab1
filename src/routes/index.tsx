@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight, Activity, ShieldCheck, Database, Zap, Cpu } from "lucide-react";
 import { Header } from "@/components/tl/Header";
 import { Footer } from "@/components/tl/Footer";
-import { AreaSpark, BarMatrix, RadialGauge } from "@/components/tl/MiniChart";
+import { AreaSpark } from "@/components/tl/MiniChart";
 
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -75,9 +75,7 @@ function Hero() {
               Analizamos sus datos operativos para diseñar modelos predictivos que eliminan la incertidumbre y maximizan su rinde.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
-              <Link to="/contacto" className="inline-flex items-center gap-1.5 h-9 px-4 rounded-md bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition">
-                Solicitar demo <ArrowUpRight className="h-3.5 w-3.5" />
-              </Link>
+              
               <Link to="/laboratorio" className="inline-flex items-center gap-1.5 h-9 px-4 rounded-md border border-border glass text-[13px] hover:bg-accent/40 transition">
                 Ver ecosistemas
               </Link>
@@ -87,7 +85,7 @@ function Hero() {
 
         {/* HUD Widgets */}
         <div className="mt-14 grid grid-cols-12 gap-3" id="ecosistemas">
-          <div className="col-span-12 md:col-span-5 glass-strong rounded-xl overflow-hidden relative">
+          <div className="col-span-12 md:col-span-6 glass-strong rounded-xl overflow-hidden relative">
             <video
               src="/ganado_detectado.mp4"
               autoPlay
@@ -107,31 +105,50 @@ function Hero() {
             </div>
           </div>
 
-          <div className="col-span-6 md:col-span-3 glass-strong rounded-xl p-5 flex flex-col justify-between">
-            <div>
-              <div className="label-tag mb-1">Carga distribuida</div>
-              <div className="font-display text-2xl">Mapa de nodos</div>
+          {/* Tres cajas apiladas a la derecha */}
+          <div className="col-span-12 md:col-span-6 flex flex-col gap-3">
+
+            {/* Caja 1: Capacidades e Infraestructura */}
+            <div className="glass-strong rounded-xl p-5 flex-1">
+              <div className="label-tag mb-1">Infraestructura AI</div>
+              <div className="font-display text-lg mb-2">Modelos a Medida y Eficientes</div>
+              <p className="text-xs text-muted-foreground leading-relaxed mb-3">
+                Desarrollamos e implementamos arquitecturas optimizadas (YOLO, transformers) preparadas para correr de forma local o en la nube, garantizando latencias mínimas (&lt;40 ms) y máxima privacidad de datos.
+              </p>
+              <div className="flex gap-2 flex-wrap">
+                {["YOLO", "Transformers", "Edge", "Cloud"].map((t) => (
+                  <span key={t} className="px-2 py-0.5 rounded text-[10px] font-mono-data glass border border-border/60 text-muted-foreground">{t}</span>
+                ))}
+              </div>
             </div>
-            <BarMatrix rows={5} cols={16} className="mt-4" />
-          </div>
 
-          <div className="col-span-6 md:col-span-2 glass-strong rounded-xl p-5 flex flex-col items-center justify-center">
-            <RadialGauge value={94} label="Confianza modelo" size={108} />
-          </div>
+            {/* Caja 2: Verticales de impacto */}
+            <div className="glass-strong rounded-xl p-5 flex-1">
+              <div className="label-tag mb-1">Verticales de Impacto</div>
+              <div className="font-display text-lg mb-3">Soluciones para Industrias Críticas</div>
+              <div className="flex gap-2 flex-wrap">
+                {["AgTech", "Oil & Gas", "Logística", "Manufactura"].map((s) => (
+                  <span key={s} className="px-2.5 py-1 rounded-md text-[11px] font-mono-data glass border border-border/60 text-foreground">{s}</span>
+                ))}
+              </div>
+            </div>
 
-          <div className="col-span-12 md:col-span-2 glass-strong rounded-xl p-5 flex flex-col justify-between">
-            <div className="label-tag mb-1">Eventos</div>
-            <ul className="mt-3 space-y-1.5 font-mono-data text-[10px]">
-              {[
-                ["12:04:21", "MFG · OEE +0.4%"],
-                ["12:04:18", "AGRO · NDVI sync"],
-                ["12:04:11", "BIO · 412 hits"],
-              ].map(([t, m]) => (
-                <li key={t} className="flex justify-between gap-2 text-muted-foreground">
-                  <span>{t}</span><span className="text-foreground truncate">{m}</span>
-                </li>
-              ))}
-            </ul>
+            {/* Caja 3: CTA */}
+            <div className="rounded-xl p-5 flex-1 border border-border/60 bg-gradient-to-br from-foreground/8 to-foreground/3 flex flex-col justify-between">
+              <div>
+                <div className="label-tag mb-1">Piloto </div>
+                <div className="font-display text-lg mb-2">¿Tenés un desafío de datos?</div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Analicemos la viabilidad técnica de tu proyecto.
+                </p>
+              </div>
+              <div className="mt-4">
+                <Link to="/contacto" className="inline-flex items-center gap-1.5 h-9 px-4 rounded-md bg-foreground text-background text-[13px] font-medium hover:opacity-90 transition">
+                  Analizar mi proyecto <ArrowUpRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
