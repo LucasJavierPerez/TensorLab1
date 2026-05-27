@@ -87,18 +87,24 @@ function Hero() {
 
         {/* HUD Widgets */}
         <div className="mt-14 grid grid-cols-12 gap-3" id="ecosistemas">
-          <div className="col-span-12 md:col-span-5 glass-strong rounded-xl p-5">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <div className="label-tag mb-1">Telemetría global · 24h</div>
-                <div className="font-display text-2xl">Throughput de cómputo</div>
-              </div>
-              <div className="text-right">
-                <div className="font-mono-data text-[11px] text-glow">+ 12.4%</div>
-                <div className="font-display text-xl">8.4 <span className="text-xs text-muted-foreground">GB/s</span></div>
-              </div>
+          <div className="col-span-12 md:col-span-5 glass-strong rounded-xl overflow-hidden relative">
+            <video
+              src="/ganado_detectado.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+              style={{ minHeight: 180 }}
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-background via-background/30 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-5">
+              <div className="label-tag mb-1 text-[#257202]">Computer Vision · Tiempo Real</div>
+              <div className="font-display text-xl leading-tight">Detección y clasificación<br />de individuos por inferencia óptica</div>
+              <p className="mt-1.5 text-[11px] text-muted-foreground font-mono-data">
+                modelo YOLOv · latencia &lt;40 ms · confianza 97.3%
+              </p>
             </div>
-            <AreaSpark data={series(99, 60)} height={120} />
           </div>
 
           <div className="col-span-6 md:col-span-3 glass-strong rounded-xl p-5 flex flex-col justify-between">
