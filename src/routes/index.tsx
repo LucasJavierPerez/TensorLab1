@@ -207,13 +207,13 @@ function AiAssistant() {
   return (
     <section className="border-t border-border/60 py-16">
       <div className="mx-auto max-w-[1400px] px-6">
-        <div className="glass-strong rounded-2xl p-8 md:p-10 grid grid-cols-12 gap-8 items-center">
+        <div className="glass-strong rounded-2xl p-6 md:p-10 grid grid-cols-12 gap-6 md:gap-8 items-center">
           <div className="col-span-12 md:col-span-7">
             <div className="label-tag mb-3">— Incluido en cada proyecto</div>
-            <h3 className="font-display text-3xl md:text-4xl tracking-tight leading-tight mb-4">
-              Asistente AI integrado<br className="hidden md:block" /> en su plataforma
+            <h3 className="font-display text-2xl md:text-4xl tracking-tight leading-tight mb-3 md:mb-4">
+              Asistente AI integrado en su plataforma
             </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-lg">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Cada ecosistema TensorLabs incluye un asistente conversacional entrenado sobre sus datos y modelos. Sus equipos interpretan resultados y toman decisiones sin fricción técnica.
             </p>
             <Link
@@ -223,9 +223,9 @@ function AiAssistant() {
               Ver demo en el laboratorio <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>
-          <div className="col-span-12 md:col-span-5 flex flex-col gap-3">
+          <div className="col-span-12 md:col-span-5 flex flex-col gap-2 md:gap-3">
             {features.map(({ t, d }) => (
-              <div key={t} className="flex items-start gap-3 glass rounded-xl p-4">
+              <div key={t} className="flex items-start gap-3 glass rounded-xl p-3 md:p-4">
                 <Bot className="h-4 w-4 text-glow shrink-0 mt-0.5" />
                 <div>
                   <div className="text-sm font-medium mb-0.5">{t}</div>

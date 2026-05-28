@@ -146,7 +146,7 @@ function Laboratorio() {
         </aside>
 
         {/* Iframe + chat panel */}
-        <div className="flex flex-1 overflow-hidden min-h-0">
+        <div className="flex flex-col md:flex-row flex-1 overflow-hidden min-h-0">
           <main className="flex-1 overflow-hidden bg-background min-h-0">
             <iframe
               key={selected.file}
@@ -237,7 +237,7 @@ function ChatPanel({
   ];
 
   return (
-    <div className="w-80 shrink-0 border-l border-border/50 bg-background flex flex-col">
+    <div className="w-full h-72 md:h-auto md:w-80 shrink-0 border-t md:border-t-0 md:border-l border-border/50 bg-background flex flex-col">
       {/* Header */}
       <div className="px-4 py-3 border-b border-border/50 shrink-0">
         <div className="flex items-center gap-1.5 text-glow">
