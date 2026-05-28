@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/tl/Header";
-import { FlaskConical, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { FlaskConical, ChevronRight, MessageSquare, Send, Loader2 } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { sendChatMessage, type ChatMessage } from "@/lib/chat.server";
 
 export const Route = createFileRoute("/laboratorio")({
   head: () => ({
@@ -47,14 +48,19 @@ function Laboratorio() {
     <div className="flex flex-col h-dvh bg-[#f8f9fa] dark:bg-[#0d1117] text-foreground transition-colors">
       <Header />
 
-      {/* Mobile: tab bar + iframe stacked. Desktop: sidebar + iframe side by side */}
       <div className="flex flex-col md:flex-row flex-1 overflow-hidden min-h-0">
 
         {/* Mobile tab bar */}
         <div className="md:hidden shrink-0 border-b border-border/50 bg-background">
-          <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border/30">
-            <FlaskConical className="h-4 w-4 text-glow shrink-0" />
-            <span className="text-xs font-medium text-glow">Research Lab</span>
+          <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/30">
+            <div className="flex items-center gap-2">
+              <FlaskConical className="h-4 w-4 text-glow shrink-0" />
+              <span className="text-xs font-medium text-glow">Research Lab</span>
+            </div>
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-glow/20 text-glow border border-glow/30">
+              <MessageSquare className="h-3 w-3" />
+              Lab AI
+            </div>
           </div>
           <div className="flex overflow-x-auto scrollbar-none px-2 py-2 gap-1.5">
             {NOTEBOOK_EXAMPLES.map((nb) => {
@@ -139,15 +145,22 @@ function Laboratorio() {
           </div>
         </aside>
 
-        {/* Iframe panel */}
-        <main className="flex-1 overflow-hidden bg-background min-h-0">
-          <iframe
-            key={selected.file}
-            src={`/notebooks/${selected.file}`}
-            className="w-full h-full border-0"
-            title={selected.title}
+        {/* Iframe + chat panel */}
+        <div className="flex flex-1 overflow-hidden min-h-0">
+          <main className="flex-1 overflow-hidden bg-background min-h-0">
+            <iframe
+              key={selected.file}
+              src={`/notebooks/${selected.file}`}
+              className="w-full h-full border-0"
+              title={selected.title}
+            />
+          </main>
+
+          <ChatPanel
+            notebookFile={selected.file}
+            notebookTitle={selected.title}
           />
-        </main>
+        </div>
       </div>
 
       <footer className="shrink-0 border-t border-border/50 px-4 md:px-6 py-2.5 flex items-center justify-between bg-background">
@@ -159,6 +172,155 @@ function Laboratorio() {
           <span className="hidden sm:inline">python · marimo</span>
         </div>
       </footer>
+    </div>
+  );
+}
+
+function ChatPanel({
+  notebookFile,
+  notebookTitle,
+}: {
+  notebookFile: string;
+  notebookTitle: string;
+}) {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, loading]);
+
+  useEffect(() => {
+    setMessages([]);
+  }, [notebookFile]);
+
+  const send = async () => {
+    const text = input.trim();
+    if (!text || loading) return;
+
+    const userMsg: ChatMessage = { role: "user", content: text };
+    setMessages((prev) => [...prev, userMsg]);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const { reply } = await sendChatMessage({
+        data: { message: text, notebookFile, history: messages as { role: "user" | "assistant"; content: string }[] },
+      });
+      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+    } catch (err) {
+      console.error("Chat error:", err);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: `Error: ${err instanceof Error ? err.message : String(err)}` },
+      ]);
+    } finally {
+      setLoading(false);
+      inputRef.current?.focus();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      send();
+    }
+  };
+
+  const SUGGESTIONS = [
+    "¿Qué modelos usa esta notebook?",
+    "Explicame el concepto principal",
+    "¿Cómo interpreto los resultados?",
+  ];
+
+  return (
+    <div className="w-80 shrink-0 border-l border-border/50 bg-background flex flex-col">
+      {/* Header */}
+      <div className="px-4 py-3 border-b border-border/50 shrink-0">
+        <div className="flex items-center gap-1.5 text-glow">
+          <MessageSquare className="h-3.5 w-3.5" />
+          <span className="text-xs font-medium">Lab AI</span>
+        </div>
+        <p className="text-[10px] text-muted-foreground mt-0.5 truncate">{notebookTitle}</p>
+      </div>
+
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-3 space-y-3">
+        {messages.length === 0 && (
+          <div className="text-center py-6">
+            <MessageSquare className="h-6 w-6 text-muted-foreground/30 mx-auto mb-2" />
+            <p className="text-xs text-muted-foreground leading-relaxed mb-3">
+              Preguntame sobre la notebook activa.
+            </p>
+            <div className="space-y-1.5">
+              {SUGGESTIONS.map((q) => (
+                <button
+                  key={q}
+                  onClick={() => setInput(q)}
+                  className="block w-full text-left px-2.5 py-1.5 rounded-md text-[11px] text-muted-foreground border border-border/50 hover:bg-muted/50 hover:text-foreground transition-all"
+                >
+                  {q}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {messages.map((msg, i) => (
+          <div key={i} className={["flex", msg.role === "user" ? "justify-end" : "justify-start"].join(" ")}>
+            <div
+              className={[
+                "max-w-[85%] px-3 py-2 rounded-xl text-xs leading-relaxed whitespace-pre-wrap",
+                msg.role === "user"
+                  ? "bg-foreground text-background rounded-br-sm"
+                  : "bg-muted/60 text-foreground rounded-bl-sm border border-border/40",
+              ].join(" ")}
+            >
+              {msg.content}
+            </div>
+          </div>
+        ))}
+
+        {loading && (
+          <div className="flex justify-start">
+            <div className="bg-muted/60 border border-border/40 px-3 py-2 rounded-xl rounded-bl-sm flex items-center gap-2">
+              <Loader2 className="h-3 w-3 animate-spin text-muted-foreground" />
+              <span className="text-xs text-muted-foreground">Analizando...</span>
+            </div>
+          </div>
+        )}
+
+        <div ref={bottomRef} />
+      </div>
+
+      {/* Input */}
+      <div className="shrink-0 border-t border-border/50 p-3">
+        <div className="flex gap-2 items-end">
+          <textarea
+            ref={inputRef}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Preguntá sobre la notebook..."
+            rows={1}
+            className="flex-1 resize-none bg-muted/40 border border-border/50 rounded-lg px-3 py-2 text-xs placeholder:text-muted-foreground/50 focus:outline-none focus:border-glow/40 transition-colors max-h-28 leading-relaxed"
+            style={{ minHeight: "36px" }}
+          />
+          <button
+            onClick={send}
+            disabled={!input.trim() || loading}
+            className="shrink-0 h-9 w-9 flex items-center justify-center rounded-lg bg-foreground text-background disabled:opacity-30 hover:opacity-80 transition-all"
+          >
+            <Send className="h-3.5 w-3.5" />
+          </button>
+        </div>
+        <p className="text-[10px] text-muted-foreground/30 mt-1.5 text-center">
+          Enter para enviar · Shift+Enter nueva línea
+        </p>
+      </div>
     </div>
   );
 }

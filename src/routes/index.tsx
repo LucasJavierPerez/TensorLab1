@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, Activity, ShieldCheck, Database, Zap, Cpu } from "lucide-react";
+import { ArrowUpRight, Activity, ShieldCheck, Database, Zap, Cpu, Bot } from "lucide-react";
 import { Header } from "@/components/tl/Header";
 import { Footer } from "@/components/tl/Footer";
 import { AreaSpark } from "@/components/tl/MiniChart";
@@ -21,6 +21,7 @@ function Index() {
     <div className="min-h-screen bg-atmosphere">
       <Header />
       <Hero />
+      <AiAssistant />
       <Pillars />
       <GlobalKpis />
       <CTA />
@@ -192,6 +193,48 @@ function Pillars() {
             <p className="text-sm text-muted-foreground leading-relaxed">{it.d}</p>
           </div>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function AiAssistant() {
+  const features = [
+    { t: "Consultas en lenguaje natural", d: "Sus equipos preguntan directamente, sin intermediarios técnicos." },
+    { t: "Entrenado sobre sus datos", d: "Contexto específico de su industria y sus modelos productivos." },
+    { t: "Disponible 24/7", d: "Integrado en su flujo de trabajo, accesible desde cualquier dispositivo." },
+  ];
+  return (
+    <section className="border-t border-border/60 py-16">
+      <div className="mx-auto max-w-[1400px] px-6">
+        <div className="glass-strong rounded-2xl p-8 md:p-10 grid grid-cols-12 gap-8 items-center">
+          <div className="col-span-12 md:col-span-7">
+            <div className="label-tag mb-3">— Incluido en cada proyecto</div>
+            <h3 className="font-display text-3xl md:text-4xl tracking-tight leading-tight mb-4">
+              Asistente AI integrado<br className="hidden md:block" /> en su plataforma
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-lg">
+              Cada ecosistema TensorLabs incluye un asistente conversacional entrenado sobre sus datos y modelos. Sus equipos interpretan resultados y toman decisiones sin fricción técnica.
+            </p>
+            <Link
+              to="/laboratorio"
+              className="inline-flex items-center gap-1.5 mt-6 h-9 px-4 rounded-md border border-border glass text-[13px] hover:bg-accent/40 transition"
+            >
+              Ver demo en el laboratorio <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+          <div className="col-span-12 md:col-span-5 flex flex-col gap-3">
+            {features.map(({ t, d }) => (
+              <div key={t} className="flex items-start gap-3 glass rounded-xl p-4">
+                <Bot className="h-4 w-4 text-glow shrink-0 mt-0.5" />
+                <div>
+                  <div className="text-sm font-medium mb-0.5">{t}</div>
+                  <div className="text-xs text-muted-foreground leading-relaxed">{d}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

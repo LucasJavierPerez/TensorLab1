@@ -83,11 +83,6 @@ export function Header() {
           </div>
           
           <div className="flex items-center gap-2">
-            <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full glass text-[11px] font-mono-data">
-              <span className="pulse-dot" />
-              <span className="text-muted-foreground">SISTEMA</span>
-              <span className="text-foreground">OPERATIVO</span>
-            </div>
             <button
               onClick={toggle}
               aria-label="Toggle theme"
