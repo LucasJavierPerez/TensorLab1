@@ -48,10 +48,10 @@ function Laboratorio() {
     <div className="flex flex-col h-dvh bg-[#f8f9fa] dark:bg-[#0d1117] text-foreground transition-colors">
       <Header />
 
-      <div className="flex flex-col md:flex-row flex-1 overflow-hidden min-h-0">
+      <div className="flex flex-col lg:flex-row flex-1 overflow-hidden min-h-0">
 
-        {/* Mobile tab bar */}
-        <div className="md:hidden shrink-0 border-b border-border/50 bg-background">
+        {/* Mobile/tablet tab bar */}
+        <div className="lg:hidden shrink-0 border-b border-border/50 bg-background">
           <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/30">
             <div className="flex items-center gap-2">
               <FlaskConical className="h-4 w-4 text-glow shrink-0" />
@@ -86,7 +86,7 @@ function Laboratorio() {
         </div>
 
         {/* Desktop sidebar */}
-        <aside className="hidden md:flex w-72 shrink-0 border-r border-border/50 bg-background flex-col">
+        <aside className="hidden lg:flex w-72 shrink-0 border-r border-border/50 bg-background flex-col">
           <div className="px-4 py-5 border-b border-border/50 space-y-1">
             <div className="flex items-center gap-2 text-glow">
               <FlaskConical className="h-4 w-4" />
@@ -146,7 +146,7 @@ function Laboratorio() {
         </aside>
 
         {/* Iframe + chat panel */}
-        <div className="flex flex-col md:flex-row flex-1 overflow-hidden min-h-0">
+        <div className="flex flex-col lg:flex-row flex-1 overflow-hidden min-h-0">
           <main className="flex-1 overflow-hidden bg-background min-h-0">
             <iframe
               key={selected.file}
@@ -163,11 +163,11 @@ function Laboratorio() {
         </div>
       </div>
 
-      <footer className="shrink-0 border-t border-border/50 px-4 md:px-6 py-2.5 flex items-center justify-between bg-background">
+      <footer className="shrink-0 border-t border-border/50 px-4 lg:px-6 py-2.5 flex items-center justify-between bg-background">
         <span className="text-[10px] font-mono-data text-muted-foreground/50 uppercase tracking-widest">
           © 2026 TensorLabs
         </span>
-        <div className="flex items-center gap-3 md:gap-4 text-[10px] font-mono-data text-muted-foreground/40">
+        <div className="flex items-center gap-3 lg:gap-4 text-[10px] font-mono-data text-muted-foreground/40">
           <span>Uptime 99.998%</span>
           <span className="hidden sm:inline">python · marimo</span>
         </div>
@@ -237,7 +237,7 @@ function ChatPanel({
   ];
 
   return (
-    <div className="w-full h-72 md:h-auto md:w-80 shrink-0 border-t md:border-t-0 md:border-l border-border/50 bg-background flex flex-col">
+    <div className="w-full h-80 lg:h-auto lg:w-80 shrink-0 border-t lg:border-t-0 lg:border-l border-border/50 bg-background flex flex-col">
       {/* Header */}
       <div className="px-4 py-3 border-b border-border/50 shrink-0">
         <div className="flex items-center gap-1.5 text-glow">
