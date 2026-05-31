@@ -6,8 +6,8 @@
 
 /* TensorLabs — Clinical Precision v1.0
  * Aesthetic: High-density clinical, industrial futurist, glassmorphism.
- * Primary "Clinical Glow": teal/cyan #006a61 → #00decb.
- * All colors in oklch.
+ * Primary "Clinical Glow": teal/cyan #077a6e → #00ccba.
+ * Colors in sRGB hex/rgba for maximum browser compatibility (Safari 10+).
  */
 
 @layer base {
@@ -89,114 +89,125 @@
   --radius: 0.375rem;
 
   /* Surfaces — clinical light */
-  --background: oklch(0.985 0.003 220);          /* #f7f9fb */
-  --foreground: oklch(0.20 0.03 230);            /* deep slate */
+  --background: #f7f9fb;
+  --foreground: #1c2b38;
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.20 0.03 230);
+  --card: #ffffff;
+  --card-foreground: #1c2b38;
 
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.20 0.03 230);
+  --popover: #ffffff;
+  --popover-foreground: #1c2b38;
 
   /* Clinical Glow — teal/cyan */
-  --primary: oklch(0.55 0.10 195);               /* ~#006a61 deep teal */
-  --primary-foreground: oklch(0.99 0.01 200);
-  --glow: oklch(0.82 0.16 195);                  /* ~#00decb cyan */
+  --primary: #077a6e;
+  --primary-foreground: #fafffe;
+  --glow: #00ccba;
 
-  --secondary: oklch(0.95 0.01 220);
-  --secondary-foreground: oklch(0.25 0.03 230);
+  --secondary: #eef2f7;
+  --secondary-foreground: #1e2d3d;
 
-  --muted: oklch(0.95 0.01 220);
-  --muted-foreground: oklch(0.50 0.02 230);
+  --muted: #eef2f7;
+  --muted-foreground: #6b7a8d;
 
-  --accent: oklch(0.93 0.04 195);
-  --accent-foreground: oklch(0.30 0.06 200);
+  --accent: #e0f3f0;
+  --accent-foreground: #1a3d48;
 
-  --destructive: oklch(0.58 0.22 22);            /* surgical red */
-  --destructive-foreground: oklch(0.99 0.01 200);
-  --success: oklch(0.68 0.16 165);
-  --warning: oklch(0.78 0.16 80);                /* industrial yellow */
+  --destructive: #dc2626;
+  --destructive-foreground: #fafffe;
+  --success: #16a34a;
+  --warning: #ca8a04;
 
-  --border: oklch(0.90 0.01 220);
-  --input: oklch(0.90 0.01 220);
-  --ring: oklch(0.65 0.12 195);
-  --grid: oklch(0.90 0.01 220 / 60%);
+  --border: #dde4ed;
+  --input: #dde4ed;
+  --ring: #0a9e90;
+  --grid: rgba(221, 228, 237, 0.60);
 
-  --chart-1: oklch(0.65 0.13 195);
-  --chart-2: oklch(0.55 0.10 195);
-  --chart-3: oklch(0.78 0.16 80);
-  --chart-4: oklch(0.58 0.22 22);
-  --chart-5: oklch(0.68 0.16 165);
+  --chart-1: #0a9e90;
+  --chart-2: #077a6e;
+  --chart-3: #ca8a04;
+  --chart-4: #dc2626;
+  --chart-5: #16a34a;
 
-  --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.25 0.03 230);
-  --sidebar-primary: oklch(0.55 0.10 195);
-  --sidebar-primary-foreground: oklch(0.99 0.01 200);
-  --sidebar-accent: oklch(0.95 0.02 200);
-  --sidebar-accent-foreground: oklch(0.25 0.03 230);
-  --sidebar-border: oklch(0.92 0.01 220);
-  --sidebar-ring: oklch(0.65 0.12 195);
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1e2d3d;
+  --sidebar-primary: #077a6e;
+  --sidebar-primary-foreground: #fafffe;
+  --sidebar-accent: #eef5f4;
+  --sidebar-accent-foreground: #1e2d3d;
+  --sidebar-border: #e3eaf3;
+  --sidebar-ring: #0a9e90;
+
+  /* Glass helpers */
+  --glass-bg: rgba(255, 255, 255, 0.70);
+  --glass-bg-strong: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(221, 228, 237, 0.80);
 
   /* Gradients & shadows */
-  --gradient-atmospheric: radial-gradient(ellipse at 20% 0%, oklch(0.82 0.16 195 / 18%), transparent 55%),
-                           radial-gradient(ellipse at 80% 30%, oklch(0.55 0.10 195 / 14%), transparent 60%);
-  --gradient-glow: linear-gradient(135deg, oklch(0.55 0.10 195), oklch(0.82 0.16 195));
-  --shadow-clinical: 0 1px 0 0 oklch(1 0 0 / 60%) inset, 0 8px 32px -12px oklch(0.40 0.08 200 / 18%);
-  --shadow-glow: 0 0 0 1px oklch(0.82 0.16 195 / 30%), 0 8px 40px -8px oklch(0.82 0.16 195 / 35%);
+  --gradient-atmospheric: radial-gradient(ellipse at 20% 0%, rgba(0, 204, 186, 0.18), transparent 55%),
+                           radial-gradient(ellipse at 80% 30%, rgba(7, 122, 110, 0.14), transparent 60%);
+  --gradient-glow: linear-gradient(135deg, #077a6e, #00ccba);
+  --shadow-clinical: 0 1px 0 0 rgba(255, 255, 255, 0.60) inset, 0 8px 32px -12px rgba(64, 130, 154, 0.18);
+  --shadow-glow: 0 0 0 1px rgba(0, 204, 186, 0.30), 0 8px 40px -8px rgba(0, 204, 186, 0.35);
 }
 
 .dark {
-  --background: oklch(0.16 0.025 235);           /* deep slate */
-  --foreground: oklch(0.96 0.01 220);
+  --background: #111827;
+  --foreground: #f1f5f9;
 
-  --card: oklch(0.21 0.028 235);
-  --card-foreground: oklch(0.96 0.01 220);
+  --card: #1e293b;
+  --card-foreground: #f1f5f9;
 
-  --popover: oklch(0.21 0.028 235);
-  --popover-foreground: oklch(0.96 0.01 220);
+  --popover: #1e293b;
+  --popover-foreground: #f1f5f9;
 
-  --primary: oklch(0.82 0.16 195);
-  --primary-foreground: oklch(0.16 0.025 235);
-  --glow: oklch(0.85 0.17 195);
+  --primary: #00ccba;
+  --primary-foreground: #111827;
+  --glow: #00d4c0;
 
-  --secondary: oklch(0.26 0.03 235);
-  --secondary-foreground: oklch(0.96 0.01 220);
+  --secondary: #263548;
+  --secondary-foreground: #f1f5f9;
 
-  --muted: oklch(0.24 0.03 235);
-  --muted-foreground: oklch(0.70 0.02 220);
+  --muted: #1e2d42;
+  --muted-foreground: #94a3b8;
 
-  --accent: oklch(0.30 0.06 200);
-  --accent-foreground: oklch(0.96 0.01 220);
+  --accent: #1a3d48;
+  --accent-foreground: #f1f5f9;
 
-  --destructive: oklch(0.65 0.22 22);
-  --destructive-foreground: oklch(0.99 0.01 200);
-  --success: oklch(0.74 0.16 165);
-  --warning: oklch(0.82 0.17 80);
+  --destructive: #ef4444;
+  --destructive-foreground: #fafffe;
+  --success: #22c55e;
+  --warning: #eab308;
 
-  --border: oklch(1 0 0 / 8%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.82 0.16 195);
-  --grid: oklch(1 0 0 / 6%);
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #00ccba;
+  --grid: rgba(255, 255, 255, 0.06);
 
-  --chart-1: oklch(0.82 0.16 195);
-  --chart-2: oklch(0.65 0.13 195);
-  --chart-3: oklch(0.82 0.17 80);
-  --chart-4: oklch(0.65 0.22 22);
-  --chart-5: oklch(0.74 0.16 165);
+  --chart-1: #00ccba;
+  --chart-2: #0a9e90;
+  --chart-3: #eab308;
+  --chart-4: #ef4444;
+  --chart-5: #22c55e;
 
-  --sidebar: oklch(0.18 0.025 235);
-  --sidebar-foreground: oklch(0.92 0.01 220);
-  --sidebar-primary: oklch(0.82 0.16 195);
-  --sidebar-primary-foreground: oklch(0.16 0.025 235);
-  --sidebar-accent: oklch(0.24 0.03 235);
-  --sidebar-accent-foreground: oklch(0.96 0.01 220);
-  --sidebar-border: oklch(1 0 0 / 8%);
-  --sidebar-ring: oklch(0.82 0.16 195);
+  --sidebar: #131e2e;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-primary: #00ccba;
+  --sidebar-primary-foreground: #111827;
+  --sidebar-accent: #1e2d42;
+  --sidebar-accent-foreground: #f1f5f9;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #00ccba;
 
-  --gradient-atmospheric: radial-gradient(ellipse at 20% 0%, oklch(0.82 0.16 195 / 22%), transparent 55%),
-                           radial-gradient(ellipse at 80% 30%, oklch(0.55 0.10 195 / 28%), transparent 60%);
-  --shadow-clinical: 0 1px 0 0 oklch(1 0 0 / 5%) inset, 0 12px 40px -12px oklch(0 0 0 / 60%);
-  --shadow-glow: 0 0 0 1px oklch(0.82 0.16 195 / 35%), 0 8px 40px -8px oklch(0.82 0.16 195 / 45%);
+  /* Glass helpers (dark) */
+  --glass-bg: rgba(30, 41, 59, 0.70);
+  --glass-bg-strong: rgba(30, 41, 59, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.08);
+
+  /* Gradients & shadows (dark) */
+  --gradient-atmospheric: radial-gradient(ellipse at 20% 0%, rgba(0, 204, 186, 0.22), transparent 55%),
+                           radial-gradient(ellipse at 80% 30%, rgba(7, 122, 110, 0.28), transparent 60%);
+  --shadow-clinical: 0 1px 0 0 rgba(255, 255, 255, 0.05) inset, 0 12px 40px -12px rgba(0, 0, 0, 0.60);
+  --shadow-glow: 0 0 0 1px rgba(0, 204, 186, 0.35), 0 8px 40px -8px rgba(0, 204, 186, 0.45);
 }
 
 @layer base {
@@ -221,17 +232,17 @@
   .font-mono-data { font-family: var(--font-mono); font-feature-settings: "tnum","zero"; letter-spacing: 0.02em; }
 
   .glass {
-    background: color-mix(in oklab, var(--card) 70%, transparent);
+    background: var(--glass-bg);
     backdrop-filter: blur(14px) saturate(140%);
     -webkit-backdrop-filter: blur(14px) saturate(140%);
-    border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+    border: 1px solid var(--glass-border);
     box-shadow: var(--shadow-clinical);
   }
   .glass-strong {
-    background: color-mix(in oklab, var(--card) 85%, transparent);
+    background: var(--glass-bg-strong);
     backdrop-filter: blur(20px) saturate(160%);
     -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
+    border: 1px solid var(--glass-border);
     box-shadow: var(--shadow-clinical);
   }
   .clinical-glow { box-shadow: var(--shadow-glow); }
@@ -257,8 +268,8 @@
       to bottom,
       transparent 0,
       transparent 3px,
-      color-mix(in oklab, var(--glow) 6%, transparent) 3px,
-      color-mix(in oklab, var(--glow) 6%, transparent) 4px
+      rgba(0, 204, 186, 0.06) 3px,
+      rgba(0, 204, 186, 0.06) 4px
     );
   }
 
@@ -266,13 +277,13 @@
     position: relative;
     width: 8px; height: 8px; border-radius: 9999px;
     background: var(--glow);
-    box-shadow: 0 0 0 0 color-mix(in oklab, var(--glow) 60%, transparent);
+    box-shadow: 0 0 0 0 rgba(0, 204, 186, 0.60);
     animation: pulse-ring 2s cubic-bezier(.4,0,.6,1) infinite;
   }
   @keyframes pulse-ring {
-    0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--glow) 60%, transparent); }
-    70% { box-shadow: 0 0 0 10px color-mix(in oklab, var(--glow) 0%, transparent); }
-    100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--glow) 0%, transparent); }
+    0% { box-shadow: 0 0 0 0 rgba(0, 204, 186, 0.60); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 204, 186, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 204, 186, 0); }
   }
 
   @keyframes ticker {
@@ -286,11 +297,18 @@
     to { stroke-dashoffset: 0; }
   }
   .draw-line { stroke-dasharray: 1000; animation: draw-line 2.4s ease-out forwards; }
+
   .text-glow-green {
-  color: #1c909a; /* Verde neón clínico */
-  text-shadow: 
-    0 0 15px rgba(46, 246, 164, 0.4),
-    0 0 30px rgba(46, 246, 164, 0.1);
-  filter: brightness(1.2);
-}
+    color: #1c909a;
+    text-shadow:
+      0 0 15px rgba(46, 246, 164, 0.4),
+      0 0 30px rgba(46, 246, 164, 0.1);
+    filter: brightness(1.2);
+  }
+
+  /* Safe dvh with 100vh fallback for older Safari */
+  .h-dvh-safe {
+    height: 100vh;
+    height: 100dvh;
+  }
 }

@@ -18,26 +18,26 @@ const NOTEBOOK_EXAMPLES = [
   {
     file: "01_sanidad_vegetal_mip.html",
     title: "Sanidad Vegetal y MIP",
-    description: "Manejo integrado de plagas y modelos de umbral económico.",
+    description: "Modelos de grados-día, NDVI y manejo integrado de plagas.",
     tags: ["Agronomía", "MIP"],
   },
   {
-    file: "modulo_2_nutricion.html",
-    title: "Nutrición Animal",
-    description: "Balance de raciones y requerimientos nutricionales por categoría.",
-    tags: ["Ganadería", "Nutrición"],
+    file: "02_nutricion_suelos.html",
+    title: "Nutrición de Cultivos y Suelos",
+    description: "Zonificación K-Means, curva Mitscherlich y variograma de MO.",
+    tags: ["Agronomía", "Geoestadística"],
   },
   {
     file: "modulo_1_produccion_leche.html",
     title: "Producción de Leche",
-    description: "Curvas de lactancia y proyección de producción individual.",
-    tags: ["Lechería", "Proyección"],
+    description: "Curvas de lactancia Wood, detección de anomalías y proyección con Prophet.",
+    tags: ["Lechería", "ML"],
   },
   {
-    file: "10_economia_agraria.html",
-    title: "Economía Agraria y Decisiones",
-    description: "Márgenes brutos y toma de decisiones bajo incertidumbre.",
-    tags: ["Economía", "Gestión"],
+    file: "modulo_2_nutricion.html",
+    title: "Nutrición y Alimentación Animal",
+    description: "CMS, eficiencia de conversión, rumia, cadena forrajera y SVR/XGBoost.",
+    tags: ["Ganadería", "Optimización"],
   },
 ];
 
@@ -45,7 +45,7 @@ function Laboratorio() {
   const [selected, setSelected] = useState(NOTEBOOK_EXAMPLES[0]);
 
   return (
-    <div className="flex flex-col h-dvh bg-[#f8f9fa] dark:bg-[#0d1117] text-foreground transition-colors">
+    <div className="flex flex-col h-dvh-safe bg-[#f8f9fa] dark:bg-[#0d1117] text-foreground transition-colors">
       <Header />
 
       <div className="flex flex-col lg:flex-row flex-1 overflow-hidden min-h-0">
@@ -140,18 +140,18 @@ function Laboratorio() {
 
           <div className="px-4 py-3 border-t border-border/50">
             <span className="text-[10px] font-mono-data text-muted-foreground/40 uppercase tracking-widest">
-              python · marimo
+              python · jupyter
             </span>
           </div>
         </aside>
 
         {/* Iframe + chat panel */}
         <div className="flex flex-col lg:flex-row flex-1 overflow-hidden min-h-0">
-          <main className="flex-1 overflow-hidden bg-background min-h-0">
+          <main className="flex-1 bg-background min-h-0 relative">
             <iframe
               key={selected.file}
               src={`/notebooks/${selected.file}`}
-              className="w-full h-full border-0"
+              className="absolute inset-0 w-full h-full border-0"
               title={selected.title}
             />
           </main>
@@ -169,7 +169,7 @@ function Laboratorio() {
         </span>
         <div className="flex items-center gap-3 lg:gap-4 text-[10px] font-mono-data text-muted-foreground/40">
           <span>Uptime 99.998%</span>
-          <span className="hidden sm:inline">python · marimo</span>
+          <span className="hidden sm:inline">python · jupyter</span>
         </div>
       </footer>
     </div>
